@@ -16,14 +16,15 @@ type DBConfig struct {
 	TimeZone string
 }
 
-func LoadEnv() {
+type Config struct {
+	DB *DBConfig
+}
+
+func (r *Config) Init() {
 	if err := godotenv.Load(); err != nil {
 		panic("Error loading .env file")
 	}
-}
-
-func NewDBConfig() *DBConfig {
-	return &DBConfig{
+	r.DB = &DBConfig{
 		Host:     os.Getenv("DB_HOST"),
 		Port:     os.Getenv("DB_PORT"),
 		User:     os.Getenv("DB_USER"),

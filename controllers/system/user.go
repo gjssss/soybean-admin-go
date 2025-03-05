@@ -1,24 +1,18 @@
-package controllers
+package system
 
 import (
 	"net/http"
 
 	"github.com/gjssss/soybean-admin-go/models"
-	"github.com/gjssss/soybean-admin-go/services"
 
 	"github.com/gin-gonic/gin"
 )
 
 type UserController struct {
-	userService services.UserService
-}
-
-func NewUserController(service services.UserService) *UserController {
-	return &UserController{userService: service}
 }
 
 func (c *UserController) GetAllUsers(ctx *gin.Context) {
-	users, err := c.userService.GetAllUsers()
+	users, err := UserService.GetAllUsers()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -33,7 +27,7 @@ func (c *UserController) CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	createdUser, err := c.userService.CreateUser(user)
+	createdUser, err := UserService.CreateUser(user)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
