@@ -10,4 +10,5 @@ func UserRoutes(r *gin.Engine) {
 		users.GET("", UserControllers.GetAllUsers)
 		users.POST("", UserControllers.CreateUser)
 	}
+	r.POST("/login", UserControllers.Login)
 }

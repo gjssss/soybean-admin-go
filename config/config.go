@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 )
@@ -16,8 +17,14 @@ type DBConfig struct {
 	TimeZone string
 }
 
+type Secret struct {
+	JwtKey    string
+	StartTime int64
+}
+
 type Config struct {
-	DB *DBConfig
+	DB     *DBConfig
+	Secret *Secret
 }
 
 func (r *Config) Init() {
@@ -32,5 +39,9 @@ func (r *Config) Init() {
 		DBName:   os.Getenv("DB_NAME"),
 		SSLMode:  os.Getenv("DB_SSLMODE"),
 		TimeZone: os.Getenv("DB_TIMEZONE"),
+	}
+	r.Secret = &Secret{
+		JwtKey:    os.Getenv("JWT_KEY"),
+		StartTime: time.Now().Unix(),
 	}
 }
