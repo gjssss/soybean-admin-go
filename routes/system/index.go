@@ -10,5 +10,6 @@ var (
 )
 
 func Init(r *gin.Engine) {
+	AuthRoutes(r)
 	UserRoutes(r)
 }

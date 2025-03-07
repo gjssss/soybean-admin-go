@@ -17,8 +17,13 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		token := strings.Split(tokenString, " ")[1]
+		c.Set("accessToken", token)
 
-		// 解析令牌
+		if utils.CheckBlacklist(token) {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "无效令牌"})
+			return
+		}
+
 		claims, err := utils.ParseToken(token)
 
 		if err != nil {

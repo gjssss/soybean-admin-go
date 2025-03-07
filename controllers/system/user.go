@@ -71,7 +71,6 @@ func (c *UserController) DeleteUser(ctx *gin.Context) {
 func (c *UserController) Login(ctx *gin.Context) {
 	var user = models.User{}
 	if err := ctx.ShouldBindJSON(&user); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
 		return
 	}
@@ -81,4 +80,31 @@ func (c *UserController) Login(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(token))
+}
+
+func (c *UserController) RefreshToken(ctx *gin.Context) {
+	var data = struct {
+		RefreshToken string `json:"refreshToken"`
+	}{}
+	if err := ctx.ShouldBindJSON(&data); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
+		return
+	}
+	token, _ := ctx.Get("accessToken")
+	t, err := UserService.Refresh(token.(string), data.RefreshToken)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, utils.NewErrorResponse(err.Error()))
+		return
+	}
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(t))
+}
+
+func (c *UserController) GetUserInfo(ctx *gin.Context) {
+	uid, _ := ctx.Get("userID")
+	user, err := UserService.GetUserById(uid.(uint))
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, utils.NewErrorResponse(err.Error()))
+		return
+	}
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(user))
 }

@@ -49,8 +49,6 @@ type Token struct {
 }
 
 func (s *UserService) Login(username string, password string) (Token, error) {
-	println("login")
-	println(username, password)
 	user, err := SystemRepositories.User.FindByUsername(username)
 	if err != nil {
 		return Token{}, errors.New("用户不存在")
@@ -63,4 +61,12 @@ func (s *UserService) Login(username string, password string) (Token, error) {
 		return Token{}, errors.New("生成Token失败")
 	}
 	return Token{AccessToken: access, RefreshToken: refresh}, nil
+}
+
+func (s *UserService) Refresh(accessToken string, refreshToken string) (Token, error) {
+	accessToken, refreshToken, err := utils.RefreshToken(accessToken, refreshToken)
+	return Token{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}, err
 }

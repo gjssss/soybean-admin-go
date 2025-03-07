@@ -11,5 +11,4 @@ func UserRoutes(r *gin.Engine) {
 		users.GET("", middlewares.AuthMiddleware(), UserControllers.GetAllUsers)
 		users.POST("", UserControllers.CreateUser)
 	}
-	r.POST("/login", UserControllers.Login)
 }
