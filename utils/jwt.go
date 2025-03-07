@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/gjssss/soybean-admin-go/global"
@@ -17,9 +18,8 @@ var blacklistCache = cache.New(15*time.Minute, 5*time.Minute)
 
 func GenerateTokens(userID uint) (string, string, error) {
 	// JWT Key 等于 JWT Key + 启动时间，这样可以保证每次启动服务 JWT Key 都不一样，自动失效之前的 Token
-	// var jwtKey = []byte(global.Config.Secret.JwtKey + strconv.FormatInt(global.Config.Secret.StartTime, 10))
-	// var jwtKey = []byte(global.Config.Secret.JwtKey + strconv.FormatInt(global.Config.Secret.StartTime, 10))
-	var jwtKey = []byte(global.Config.Secret.JwtKey)
+	var jwtKey = []byte(global.Config.Secret.JwtKey + strconv.FormatInt(global.Config.Secret.StartTime, 10))
+	// var jwtKey = []byte(global.Config.Secret.JwtKey)
 	// Access Token (15分钟过期)
 	accessClaims := &Claims{
 		UserID: userID,
@@ -52,8 +52,8 @@ func GenerateTokens(userID uint) (string, string, error) {
 
 func ParseToken(tokenString string) (*Claims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		// return []byte(global.Config.Secret.JwtKey + strconv.FormatInt(global.Config.Secret.StartTime, 10)), nil
-		return []byte(global.Config.Secret.JwtKey), nil
+		return []byte(global.Config.Secret.JwtKey + strconv.FormatInt(global.Config.Secret.StartTime, 10)), nil
+		// return []byte(global.Config.Secret.JwtKey), nil
 	})
 	if err != nil {
 		return nil, err
