@@ -24,7 +24,7 @@ type Menu struct {
 	LocalIcon       string      `json:"localIcon,omitempty"`
 	Children        []Menu      `gorm:"-" json:"children"`
 	Query           []MenuQuery `json:"query,omitempty"`
-	Button          []Button    `gorm:"many2many:menu_buttons" json:"button,omitempty"`
+	Button          []Button    `gorm:"many2many:menu_buttons" json:"buttons,omitempty"`
 }
 
 type MenuQuery struct {
