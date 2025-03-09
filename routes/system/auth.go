@@ -8,12 +8,13 @@ import (
 func AuthRoutes(r *gin.Engine) {
 	{
 		auth := r.Group("/auth")
-		auth.POST("/login", UserControllers.Login)
+		auth.POST("/login", SystemControllers.User.Login)
 	}
 	{
 		auth := r.Group("/auth")
 		auth.Use(middlewares.AuthMiddleware())
-		auth.GET("/getUserInfo", UserControllers.GetUserInfo)
-		auth.POST("/refreshToken", UserControllers.RefreshToken)
+		auth.GET("/getUserInfo", SystemControllers.User.GetUserInfo)
+		auth.POST("/refreshToken", SystemControllers.User.RefreshToken)
+		auth.GET("/menu", SystemControllers.Menu.GetUserMenus)
 	}
 }

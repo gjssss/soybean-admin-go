@@ -6,10 +6,11 @@ import (
 )
 
 var (
-	UserControllers = controllers.System.User
+	SystemControllers = controllers.System
 )
 
 func Init(r *gin.Engine) {
 	AuthRoutes(r)
 	UserRoutes(r)
+	RouteRoutes(r)
 }

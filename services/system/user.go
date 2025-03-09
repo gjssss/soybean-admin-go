@@ -7,8 +7,7 @@ import (
 	"github.com/gjssss/soybean-admin-go/utils"
 )
 
-type UserService struct {
-}
+type UserService struct{}
 
 func (s *UserService) GetAllUsers() ([]system.User, error) {
 	return SystemRepositories.User.FindAll()

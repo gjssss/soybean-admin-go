@@ -8,4 +8,5 @@ var (
 
 type Group struct {
 	User UserService
+	Menu MenuService
 }

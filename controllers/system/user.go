@@ -9,11 +9,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserController struct {
-}
+type UserController struct{}
 
 func (c *UserController) GetAllUsers(ctx *gin.Context) {
-	users, err := UserService.GetAllUsers()
+	users, err := SystemService.User.GetAllUsers()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
 		return
@@ -28,7 +27,7 @@ func (c *UserController) CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	createdUser, err := UserService.CreateUser(user)
+	createdUser, err := SystemService.User.CreateUser(user)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
 		return
@@ -44,7 +43,7 @@ func (c *UserController) UpdateUserPassword(ctx *gin.Context) {
 		return
 	}
 
-	updatedUser, err := UserService.UpdateUserPassword(user)
+	updatedUser, err := SystemService.User.UpdateUserPassword(user)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
 		return
@@ -60,7 +59,7 @@ func (c *UserController) DeleteUser(ctx *gin.Context) {
 		return
 	}
 
-	if err := UserService.DeleteUser(user); err != nil {
+	if err := SystemService.User.DeleteUser(user); err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
 		return
 	}
@@ -74,7 +73,7 @@ func (c *UserController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
 		return
 	}
-	token, err := UserService.Login(user.UserName, user.Password)
+	token, err := SystemService.User.Login(user.UserName, user.Password)
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, utils.NewErrorResponse(err.Error()))
 		return
@@ -91,7 +90,7 @@ func (c *UserController) RefreshToken(ctx *gin.Context) {
 		return
 	}
 	token, _ := ctx.Get("accessToken")
-	t, err := UserService.Refresh(token.(string), data.RefreshToken)
+	t, err := SystemService.User.Refresh(token.(string), data.RefreshToken)
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, utils.NewErrorResponse(err.Error()))
 		return
@@ -101,7 +100,7 @@ func (c *UserController) RefreshToken(ctx *gin.Context) {
 
 func (c *UserController) GetUserInfo(ctx *gin.Context) {
 	uid, _ := ctx.Get("userID")
-	user, err := UserService.GetUserById(uid.(uint))
+	user, err := SystemService.User.GetUserById(uid.(uint))
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, utils.NewErrorResponse(err.Error()))
 		return

@@ -5,9 +5,10 @@ import (
 )
 
 var (
-	UserService = services.System.User
+	SystemService = services.System
 )
 
 type Group struct {
 	User UserController
+	Menu MenuController
 }
