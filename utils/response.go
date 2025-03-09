@@ -17,5 +17,5 @@ func NewErrorResponse(msg string) Response[string] {
 	return NewResponse("0000", "", msg)
 }
 func NewLogoutModelResponse(code string, msg string) Response[string] {
-	return NewResponse("7777", "", msg)
+	return NewResponse("8888", "", msg)
 }

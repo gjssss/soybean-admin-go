@@ -8,17 +8,14 @@ import (
 
 type MenuService struct{}
 
-func (s *MenuService) GetMenusByUserId(userId uint) ([]*system.Menu, error) {
-	dbMenu, err := SystemRepositories.Menu.GetMenusByUserId(userId)
-	if err != nil {
-		return make([]*system.Menu, 0), err
-	}
-	var menus []*system.Menu
+func nestedMenu(menus *[]system.Menu) ([]*system.Menu, error) {
+	var _menus []*system.Menu
+	var err error
 	var cache = make(map[uint]*system.Menu)
-	for _, menu := range dbMenu {
+	for _, menu := range *menus {
 		menu.Children = make([]system.Menu, 0)
 		if menu.ParentID == 0 {
-			menus = append(menus, &menu)
+			_menus = append(_menus, &menu)
 			cache[menu.ID] = &menu
 		} else {
 			if parent, ok := cache[menu.ParentID]; ok {
@@ -28,5 +25,23 @@ func (s *MenuService) GetMenusByUserId(userId uint) ([]*system.Menu, error) {
 			}
 		}
 	}
+	return _menus, err
+}
+
+func (s *MenuService) GetMenusByUserId(userId uint) ([]*system.Menu, error) {
+	dbMenu, err := SystemRepositories.Menu.GetMenusByUserId(userId)
+	if err != nil {
+		return make([]*system.Menu, 0), err
+	}
+	menus, err := nestedMenu(&dbMenu)
+	return menus, err
+}
+
+func (s *MenuService) GetMenus() ([]*system.Menu, error) {
+	dbMenu, err := SystemRepositories.Menu.GetMenus()
+	if err != nil {
+		return make([]*system.Menu, 0), err
+	}
+	menus, err := nestedMenu(&dbMenu)
 	return menus, err
 }

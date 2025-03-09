@@ -7,6 +7,12 @@ import (
 
 type MenuRepository struct{}
 
+func (c *MenuRepository) GetMenus() ([]system.Menu, error) {
+	var menus []system.Menu
+	err := global.DB.Find(&menus).Error
+	return menus, err
+}
+
 func (c *MenuRepository) GetMenusByUserId(userId uint) ([]system.Menu, error) {
 	var menus []system.Menu
 	err := global.DB.Raw(`

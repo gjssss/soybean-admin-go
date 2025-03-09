@@ -18,3 +18,12 @@ func (c *MenuController) GetUserMenus(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(menus))
 }
+
+func (c *MenuController) GetMenus(ctx *gin.Context) {
+	menus, err := SystemService.Menu.GetMenus()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
+		return
+	}
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(menus))
+}
