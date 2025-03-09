@@ -15,7 +15,9 @@ func InitDB(config *config.DBConfig) *gorm.DB {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
 		config.Host, config.User, config.Password, config.DBName, config.Port, config.SSLMode, config.TimeZone)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 	if err != nil {
 		panic("Failed to connect database")
 	}

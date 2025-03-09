@@ -39,8 +39,24 @@ func (s *UserService) DeleteUser(user system.User) error {
 	return SystemRepositories.User.Delete(user)
 }
 
-func (s *UserService) GetUserById(id uint) (system.User, error) {
-	return SystemRepositories.User.FindById(id)
+func (s *UserService) GetUserById(id uint) (system.UserDTO, error) {
+	user, err := SystemRepositories.User.FindById(id)
+	if err != nil {
+		return system.UserDTO{}, err
+	}
+	userDto := system.UserDTO{
+		ID:       user.ID,
+		UserName: user.UserName,
+		Roles:    make([]string, len(user.Roles)),
+		Buttons:  make([]string, len(user.Buttons)),
+	}
+	for i, role := range user.Roles {
+		userDto.Roles[i] = role.RoleName
+	}
+	for i, button := range user.Buttons {
+		userDto.Buttons[i] = button.Code
+	}
+	return userDto, nil
 }
 
 type Token struct {

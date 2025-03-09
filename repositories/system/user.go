@@ -38,7 +38,7 @@ func (r *UserRepository) Delete(user system.User) error {
 
 func (r *UserRepository) FindById(id uint) (system.User, error) {
 	var user system.User
-	if err := global.DB.First(&user, id).Error; err != nil {
+	if err := global.DB.Preload("Roles").Preload("Buttons").First(&user, id).Error; err != nil {
 		return system.User{}, err
 	}
 	return user, nil

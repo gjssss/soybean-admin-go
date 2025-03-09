@@ -1,37 +1,30 @@
 package system
 
 type Menu struct {
-	ID        uint   `gorm:"primaryKey"  json:"id"`
-	ParentID  *uint  `gorm:"index" json:"-"`
-	Name      string `gorm:"unique;not null" json:"name"`
-	Path      string `gorm:"unique;not null" json:"path"`
-	Component string `gorm:"size:255" json:"component"`
-	Meta      Meta   `json:"meta"`
-	Children  []Menu `gorm:"foreignKey:ParentID" json:"children,omitempty"`
+	TimeRecord
+	ID         uint        `gorm:"primaryKey;" json:"id"`
+	Status     string      `json:"status"`
+	ParentID   uint        `json:"parentId" gorm:"column:parent_id"` // 父菜单ID
+	MenuType   string      `json:"menuType"`
+	MenuName   string      `json:"menuName"`
+	RouteName  string      `json:"routeName"`
+	RoutePath  string      `json:"routePath"`
+	Component  string      `json:"component"`
+	Order      int         `json:"order"`
+	I18nKey    string      `json:"i18nKey"`
+	Icon       string      `json:"icon"`
+	IconType   string      `json:"iconType"`
+	MultiTab   bool        `json:"multiTab"`   // 是否支持多标签
+	HideInMenu bool        `json:"hideInMenu"` // 是否隐藏菜单
+	ActiveMenu string      `json:"activeMenu"` // 激活的菜单名
+	Children   []Menu      `gorm:"-" json:"children"`
+	Query      []MenuQuery `json:"query,omitempty"`
+	Button     []Button    `gorm:"many2many:menu_buttons" json:"button,omitempty"`
 }
 
-type Meta struct {
-	ID               uint     `gorm:"primaryKey" json:"id"`
-	MenuID           uint     `json:"-"`
-	Title            string   `gorm:"not null" json:"title"`
-	I18nKey          string   `json:"i18nKey,omitempty"`
-	Order            int      `json:"order,omitempty"`
-	KeepAlive        bool     `json:"keepAlive,omitempty"`
-	Constant         bool     `json:"constant"`
-	Icon             string   `json:"icon,omitempty"`
-	LocalIcon        string   `json:"localIcon,omitempty"`
-	Href             string   `json:"href,omitempty"`
-	HideInMenu       bool     `json:"hideInMenu,omitempty"`
-	ActiveMenu       string   `json:"activeMenu,omitempty"`
-	MultiTab         bool     `json:"multiTab,omitempty"`
-	FixedIndexInTabs bool     `json:"fixedIndexInTabs,omitempty"`
-	Query            []Query  `json:"query"`
-	Buttons          []Button `gorm:"many2many:meta_buttons" json:"buttons"`
-}
-
-type Query struct {
-	ID     uint   `gorm:"primaryKey" json:"id"`
-	MetaID uint   `json:"-"`
+type MenuQuery struct {
+	ID     uint   `gorm:"primaryKey;" json:"id"`
+	MenuID uint   `json:"menuId"`
 	Key    string `json:"key"`
 	Value  string `json:"value"`
 }
