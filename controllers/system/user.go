@@ -3,7 +3,7 @@ package system
 import (
 	"net/http"
 
-	"github.com/gjssss/soybean-admin-go/models"
+	"github.com/gjssss/soybean-admin-go/models/system"
 	"github.com/gjssss/soybean-admin-go/utils"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +22,7 @@ func (c *UserController) GetAllUsers(ctx *gin.Context) {
 }
 
 func (c *UserController) CreateUser(ctx *gin.Context) {
-	var user models.User
+	var user system.User
 	if err := ctx.ShouldBindJSON(&user); err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
 		return
@@ -38,7 +38,7 @@ func (c *UserController) CreateUser(ctx *gin.Context) {
 }
 
 func (c *UserController) UpdateUserPassword(ctx *gin.Context) {
-	var user models.User
+	var user system.User
 	if err := ctx.ShouldBindJSON(&user); err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
 		return
@@ -54,7 +54,7 @@ func (c *UserController) UpdateUserPassword(ctx *gin.Context) {
 }
 
 func (c *UserController) DeleteUser(ctx *gin.Context) {
-	var user models.User
+	var user system.User
 	if err := ctx.ShouldBindJSON(&user); err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
 		return
@@ -69,7 +69,7 @@ func (c *UserController) DeleteUser(ctx *gin.Context) {
 }
 
 func (c *UserController) Login(ctx *gin.Context) {
-	var user = models.User{}
+	var user = system.User{}
 	if err := ctx.ShouldBindJSON(&user); err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
 		return

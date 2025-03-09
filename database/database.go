@@ -25,8 +25,7 @@ func InitDB(config *config.DBConfig) *gorm.DB {
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
-	// Auto Migrate
-	db.AutoMigrate(&models.User{})
+	models.AutoMigrate(db)
 
 	return db
 }

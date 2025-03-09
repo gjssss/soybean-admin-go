@@ -1,4 +1,4 @@
-package models
+package system
 
 import (
 	"time"
@@ -9,5 +9,5 @@ import (
 type TimeRecord struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	DeletedAt gorm.DeletedAt
 }

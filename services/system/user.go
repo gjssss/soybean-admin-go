@@ -3,43 +3,43 @@ package system
 import (
 	"errors"
 
-	"github.com/gjssss/soybean-admin-go/models"
+	"github.com/gjssss/soybean-admin-go/models/system"
 	"github.com/gjssss/soybean-admin-go/utils"
 )
 
 type UserService struct {
 }
 
-func (s *UserService) GetAllUsers() ([]models.User, error) {
+func (s *UserService) GetAllUsers() ([]system.User, error) {
 	return SystemRepositories.User.FindAll()
 }
 
-func (s *UserService) CreateUser(user models.User) (models.User, error) {
+func (s *UserService) CreateUser(user system.User) (system.User, error) {
 	_, err := SystemRepositories.User.FindByUsername(user.UserName)
 	if err == nil {
-		return models.User{}, errors.New("用户名已存在")
+		return system.User{}, errors.New("用户名已存在")
 	}
 	user.Password, err = utils.EncodePassword(user.Password)
 	if err != nil {
-		return models.User{}, err
+		return system.User{}, err
 	}
 	return SystemRepositories.User.Create(user)
 }
 
-func (s *UserService) UpdateUserPassword(user models.User) (models.User, error) {
+func (s *UserService) UpdateUserPassword(user system.User) (system.User, error) {
 	var err error
 	user.Password, err = utils.EncodePassword(user.Password)
 	if err != nil {
-		return models.User{}, err
+		return system.User{}, err
 	}
 	return SystemRepositories.User.Update(user)
 }
 
-func (s *UserService) DeleteUser(user models.User) error {
+func (s *UserService) DeleteUser(user system.User) error {
 	return SystemRepositories.User.Delete(user)
 }
 
-func (s *UserService) GetUserById(id uint) (models.User, error) {
+func (s *UserService) GetUserById(id uint) (system.User, error) {
 	return SystemRepositories.User.FindById(id)
 }
 
