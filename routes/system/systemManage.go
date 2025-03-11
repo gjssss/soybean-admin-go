@@ -12,5 +12,6 @@ func SystemManageRoutes(r *gin.Engine) {
 		routes.GET("/getMenuList", SystemControllers.Menu.GetMenus)
 		routes.GET("/getRoleList", SystemControllers.Role.GetRoles)
 		routes.GET("/getUserList", SystemControllers.User.GetAllUsers)
+		routes.GET("/getAllRoles", SystemControllers.Role.GetAllRoles)
 	}
 }

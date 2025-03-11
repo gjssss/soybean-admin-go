@@ -21,3 +21,9 @@ func (c *RoleRepository) GetRoles(page common.PaginationParam) ([]system.Role, i
 	}
 	return roles, count, err
 }
+
+func (c *RoleRepository) GetAllRoles() ([]system.Role, error) {
+	var roles []system.Role
+	err := global.DB.Find(&roles).Error
+	return roles, err
+}

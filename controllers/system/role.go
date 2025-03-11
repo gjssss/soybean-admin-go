@@ -18,3 +18,12 @@ func (c *RoleController) GetRoles(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(utils.NewPagination(roles, page, count)))
 }
+
+func (c *RoleController) GetAllRoles(ctx *gin.Context) {
+	roles, err := SystemService.Role.GetAllRoles()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
+		return
+	}
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(roles))
+}

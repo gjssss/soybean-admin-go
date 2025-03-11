@@ -10,3 +10,7 @@ type RoleService struct{}
 func (s *RoleService) GetRoles(page common.PaginationParam) ([]system.Role, int64, error) {
 	return SystemRepositories.Role.GetRoles(page)
 }
+
+func (s *RoleService) GetAllRoles() ([]system.Role, error) {
+	return SystemRepositories.Role.GetAllRoles()
+}
