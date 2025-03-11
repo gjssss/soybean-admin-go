@@ -45,3 +45,8 @@ func (s *MenuService) GetMenus() ([]*system.Menu, error) {
 	menus, err := nestedMenu(&dbMenu)
 	return menus, err
 }
+
+func (s *MenuService) GetMenusByRoleId(roleId uint) ([]system.Menu, error) {
+	dbMenu, err := SystemRepositories.Menu.GetMenusByRoleId(roleId)
+	return dbMenu, err
+}

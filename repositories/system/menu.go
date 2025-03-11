@@ -23,3 +23,13 @@ func (c *MenuRepository) GetMenusByUserId(userId uint) ([]system.Menu, error) {
     `, userId).Scan(&menus).Error
 	return menus, err
 }
+
+func (c *MenuRepository) GetMenusByRoleId(roleId uint) ([]system.Menu, error) {
+	var menus []system.Menu
+	err := global.DB.Raw(`
+		SELECT m.* FROM menus m
+		JOIN role_menus rm ON m.id = rm.menu_id
+		WHERE rm.role_id = ?
+	`, roleId).Scan(&menus).Error
+	return menus, err
+}
