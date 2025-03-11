@@ -12,3 +12,12 @@ func ParsePagination(ctx *gin.Context) common.PaginationParam {
 	pageSize, _ := strconv.Atoi(ctx.DefaultQuery("pageSize", "10"))
 	return common.PaginationParam{Current: page, PageSize: pageSize}
 }
+
+func NewPagination[T any](data []T, page common.PaginationParam, total int64) common.Pagination[T] {
+	return common.Pagination[T]{
+		Current: page.Current,
+		Size:    page.PageSize,
+		Total:   total,
+		Records: data,
+	}
+}

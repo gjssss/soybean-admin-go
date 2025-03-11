@@ -6,8 +6,8 @@ type PaginationParam struct {
 }
 
 type Pagination[T any] struct {
-	Records []T `json:"records"`
-	Current int `json:"current"`
-	Size    int `json:"size"`
-	Total   int `json:"total"`
+	Records []T   `json:"records"`
+	Current int   `json:"current"`
+	Size    int   `json:"size"`
+	Total   int64 `json:"total"`
 }

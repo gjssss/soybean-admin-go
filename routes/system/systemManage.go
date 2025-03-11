@@ -10,5 +10,6 @@ func SystemManageRoutes(r *gin.Engine) {
 	routes.Use(middlewares.AuthMiddleware())
 	{
 		routes.GET("/getMenuList", SystemControllers.Menu.GetMenus)
+		routes.GET("/getRoleList", SystemControllers.Role.GetRoles)
 	}
 }

@@ -11,4 +11,5 @@ var (
 type Group struct {
 	User UserController
 	Menu MenuController
+	Role RoleController
 }
