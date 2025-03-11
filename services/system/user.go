@@ -3,14 +3,15 @@ package system
 import (
 	"errors"
 
+	"github.com/gjssss/soybean-admin-go/models/common"
 	"github.com/gjssss/soybean-admin-go/models/system"
 	"github.com/gjssss/soybean-admin-go/utils"
 )
 
 type UserService struct{}
 
-func (s *UserService) GetAllUsers() ([]system.User, error) {
-	return SystemRepositories.User.FindAll()
+func (s *UserService) GetAllUsers(page common.PaginationParam) ([]system.User, int64, error) {
+	return SystemRepositories.User.FindAll(page)
 }
 
 func (s *UserService) CreateUser(user system.User) (system.User, error) {

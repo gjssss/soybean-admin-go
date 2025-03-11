@@ -2,17 +2,22 @@ package system
 
 import (
 	"github.com/gjssss/soybean-admin-go/global"
+	"github.com/gjssss/soybean-admin-go/models/common"
 	"github.com/gjssss/soybean-admin-go/models/system"
 )
 
 type UserRepository struct{}
 
-func (r *UserRepository) FindAll() ([]system.User, error) {
+func (r *UserRepository) FindAll(page common.PaginationParam) ([]system.User, int64, error) {
 	var users []system.User
-	if err := global.DB.Find(&users).Error; err != nil {
-		return nil, err
+	if err := global.DB.Offset(page.PageSize * (page.Current - 1)).Limit(page.PageSize).Find(&users).Error; err != nil {
+		return nil, 0, err
 	}
-	return users, nil
+	var total int64
+	if err := global.DB.Model(&system.User{}).Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+	return users, total, nil
 }
 
 func (r *UserRepository) Create(user system.User) (system.User, error) {

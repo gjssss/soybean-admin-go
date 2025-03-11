@@ -12,12 +12,13 @@ import (
 type UserController struct{}
 
 func (c *UserController) GetAllUsers(ctx *gin.Context) {
-	users, err := SystemService.User.GetAllUsers()
+	page := utils.ParsePagination(ctx)
+	users, count, err := SystemService.User.GetAllUsers(page)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse(err.Error()))
 		return
 	}
-	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(users))
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(utils.NewPagination(users, page, count)))
 }
 
 func (c *UserController) CreateUser(ctx *gin.Context) {
