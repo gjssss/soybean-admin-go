@@ -15,5 +15,6 @@ func SystemManageRoutes(r *gin.Engine) {
 		routes.GET("/getAllRoles", SystemControllers.Role.GetAllRoles)
 		routes.GET("/getRoleMenu", SystemControllers.Menu.GetMenusByRoleId)
 		routes.GET("/getRoleButton", SystemControllers.Button.GetButtonsByRoleId)
+		routes.GET("/getAllButton", SystemControllers.Button.GetButtons)
 	}
 }
