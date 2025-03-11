@@ -16,5 +16,9 @@ func SystemManageRoutes(r *gin.Engine) {
 		routes.GET("/getRoleMenu", SystemControllers.Menu.GetMenusByRoleId)
 		routes.GET("/getRoleButton", SystemControllers.Button.GetButtonsByRoleId)
 		routes.GET("/getAllButton", SystemControllers.Button.GetButtons)
+		routes.POST("/createMenu", SystemControllers.Menu.CreateMenu)
+		routes.PUT("/updateMenu", SystemControllers.Menu.UpdateMenu)
+		routes.DELETE("/deleteMenu", SystemControllers.Menu.DeleteMenu)
+		routes.DELETE("/batchDeleteMenu", SystemControllers.Menu.BatchDeleteMenu)
 	}
 }

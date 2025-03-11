@@ -32,7 +32,6 @@ func InitDatabase(db *gorm.DB) {
 	// Menu
 	menus := []Menu{
 		{
-			ID:        1,
 			Status:    "1",
 			ParentID:  0,
 			MenuType:  "2",
@@ -47,7 +46,6 @@ func InitDatabase(db *gorm.DB) {
 		},
 		// 系统管理及其子菜单
 		{
-			ID:        2,
 			Status:    "1",
 			ParentID:  0,
 			MenuType:  "1",
@@ -61,7 +59,6 @@ func InitDatabase(db *gorm.DB) {
 			IconType:  "1",
 		},
 		{
-			ID:        3,
 			Status:    "1",
 			ParentID:  2,
 			MenuType:  "2",
@@ -75,7 +72,6 @@ func InitDatabase(db *gorm.DB) {
 			IconType:  "1",
 		},
 		{
-			ID:        4,
 			Status:    "1",
 			ParentID:  2,
 			MenuType:  "2",
@@ -89,7 +85,6 @@ func InitDatabase(db *gorm.DB) {
 			IconType:  "1",
 		},
 		{
-			ID:        5,
 			Status:    "1",
 			ParentID:  2,
 			MenuType:  "2",
@@ -103,7 +98,6 @@ func InitDatabase(db *gorm.DB) {
 			IconType:  "1",
 		},
 		{
-			ID:         6,
 			Status:     "1",
 			ParentID:   2,
 			MenuType:   "2",
