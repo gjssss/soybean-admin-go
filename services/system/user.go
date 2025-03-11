@@ -44,16 +44,20 @@ func (s *UserService) GetUserById(id uint) (system.UserDTO, error) {
 	if err != nil {
 		return system.UserDTO{}, err
 	}
+	btns, err := SystemRepositories.Button.GetButtonsByUserId(id)
+	if err != nil {
+		return system.UserDTO{}, err
+	}
 	userDto := system.UserDTO{
 		ID:       user.ID,
 		UserName: user.UserName,
 		Roles:    make([]string, len(user.Roles)),
-		Buttons:  make([]string, len(user.Buttons)),
+		Buttons:  make([]string, len(btns)),
 	}
 	for i, role := range user.Roles {
 		userDto.Roles[i] = role.RoleName
 	}
-	for i, button := range user.Buttons {
+	for i, button := range btns {
 		userDto.Buttons[i] = button.Code
 	}
 	return userDto, nil

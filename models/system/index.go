@@ -119,12 +119,12 @@ func InitDatabase(db *gorm.DB) {
 
 	// Role
 	roles := []Role{
-		{RoleName: "R_SUPER", RoleDesc: "超级管理员", Menus: menus},
+		{RoleName: "R_SUPER", RoleDesc: "超级管理员", Menus: menus, Buttons: buttons},
 	}
 
 	// User
 	users := []*User{
-		{UserName: "admin", Password: encodePassword("123123123"), Roles: roles, Buttons: buttons},
+		{UserName: "admin", Password: encodePassword("123123123"), Roles: roles},
 	}
 	db.Create(users)
 }
