@@ -12,6 +12,7 @@ var (
 func Init(r *gin.Engine) {
 	AuthRoutes(r)
 	UserRoutes(r)
-	RouteRoutes(r)
-	SystemManageRoutes(r)
+	RoleRoutes(r)
+	MenuRoutes(r)
+	ButtonRoutes(r)
 }

@@ -11,7 +11,15 @@ import (
 
 type MenuController struct{}
 
-// 获取所有菜单（GET）
+// @Summary 获取所有菜单
+// @Description 获取系统所有菜单列表
+// @Tags 菜单管理
+// @Accept json
+// @Produce json
+// @Success 200 {object} utils.Response[[]system.Menu] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /menus [get]
 func (c *MenuController) GetMenus(ctx *gin.Context) {
 	menus, err := SystemService.Menu.GetMenus()
 	if err != nil {
@@ -21,7 +29,15 @@ func (c *MenuController) GetMenus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(menus))
 }
 
-// 根据用户ID获取菜单（GET）
+// @Summary 获取用户菜单
+// @Description 获取当前用户的菜单列表
+// @Tags 菜单管理
+// @Accept json
+// @Produce json
+// @Success 200 {object} utils.Response[[]system.Menu] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /menus/user [get]
 func (c *MenuController) GetUserMenus(ctx *gin.Context) {
 	uid, _ := ctx.Get("userID")
 	menus, err := SystemService.Menu.GetMenusByUserId(uid.(uint))
@@ -32,7 +48,16 @@ func (c *MenuController) GetUserMenus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(menus))
 }
 
-// 根据角色ID获取菜单（GET）
+// @Summary 获取角色菜单
+// @Description 获取指定角色的菜单列表
+// @Tags 菜单管理
+// @Accept json
+// @Produce json
+// @Param roleId query uint true "角色ID"
+// @Success 200 {object} utils.Response[[]system.Menu] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /menus/role [get]
 func (c *MenuController) GetMenusByRoleId(ctx *gin.Context) {
 	rid := ctx.Query("roleId")
 	if rid == "" {
@@ -54,7 +79,16 @@ func (c *MenuController) GetMenusByRoleId(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(menus))
 }
 
-// 创建菜单（POST）
+// @Summary 创建菜单
+// @Description 创建新菜单
+// @Tags 菜单管理
+// @Accept json
+// @Produce json
+// @Param menu body system.Menu true "菜单信息"
+// @Success 200 {object} utils.Response[[]system.Menu] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /menus [post]
 func (c *MenuController) CreateMenu(ctx *gin.Context) {
 	var menu system.Menu
 	if err := ctx.ShouldBindJSON(&menu); err != nil {
@@ -69,7 +103,16 @@ func (c *MenuController) CreateMenu(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(menu))
 }
 
-// 更新菜单（POST）
+// @Summary 更新菜单
+// @Description 更新菜单信息
+// @Tags 菜单管理
+// @Accept json
+// @Produce json
+// @Param menu body system.Menu true "菜单信息"
+// @Success 200 {object} utils.Response[[]system.Menu] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /menus/update [post]
 func (c *MenuController) UpdateMenu(ctx *gin.Context) {
 	var menu system.Menu
 	if err := ctx.ShouldBindJSON(&menu); err != nil {
@@ -89,7 +132,16 @@ func (c *MenuController) UpdateMenu(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(menu))
 }
 
-// 删除菜单（POST）
+// @Summary 删除菜单
+// @Description 删除指定菜单
+// @Tags 菜单管理
+// @Accept json
+// @Produce json
+// @Param id body object{id=uint} true "菜单ID"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /menus/delete [post]
 func (c *MenuController) DeleteMenu(ctx *gin.Context) {
 	var params struct {
 		ID uint `json:"id" binding:"required"`
@@ -107,7 +159,16 @@ func (c *MenuController) DeleteMenu(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("删除成功"))
 }
 
-// 批量删除菜单（POST）
+// @Summary 批量删除菜单
+// @Description 批量删除多个菜单
+// @Tags 菜单管理
+// @Accept json
+// @Produce json
+// @Param ids body object{ids=[]uint} true "菜单ID列表"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /menus/batchDelete [post]
 func (c *MenuController) BatchDeleteMenu(ctx *gin.Context) {
 	var params struct {
 		IDs []uint `json:"ids" binding:"required"`

@@ -10,7 +10,15 @@ import (
 
 type ButtonController struct{}
 
-// 获取所有按钮（GET）
+// @Summary 获取所有按钮
+// @Description 获取系统所有按钮列表
+// @Tags 按钮管理
+// @Accept json
+// @Produce json
+// @Success 200 {object} utils.Response[[]system.Button] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /buttons [get]
 func (c *ButtonController) GetButtons(ctx *gin.Context) {
 	buttons, err := SystemService.Button.GetButtons()
 	if err != nil {
@@ -20,7 +28,16 @@ func (c *ButtonController) GetButtons(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(buttons))
 }
 
-// 根据角色ID获取按钮（GET）
+// @Summary 获取角色按钮
+// @Description 获取指定角色的按钮列表
+// @Tags 按钮管理
+// @Accept json
+// @Produce json
+// @Param roleId query uint true "角色ID"
+// @Success 200 {object} utils.Response[[]system.Button] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /buttons/role [get]
 func (c *ButtonController) GetButtonsByRoleId(ctx *gin.Context) {
 	rid := ctx.Query("roleId")
 	if rid == "" {
@@ -42,7 +59,15 @@ func (c *ButtonController) GetButtonsByRoleId(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(buttons))
 }
 
-// 获取当前用户的按钮（GET）
+// @Summary 获取用户按钮
+// @Description 获取当前用户的按钮权限
+// @Tags 按钮管理
+// @Accept json
+// @Produce json
+// @Success 200 {object} utils.Response[[]system.Button] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /buttons/user [get]
 func (c *ButtonController) GetUserButtons(ctx *gin.Context) {
 	uid, exists := ctx.Get("userID")
 	if !exists {

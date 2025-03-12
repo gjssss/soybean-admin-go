@@ -2,13 +2,13 @@ package system
 
 import (
 	"github.com/gjssss/soybean-admin-go/global"
-	"github.com/gjssss/soybean-admin-go/models/common"
 	"github.com/gjssss/soybean-admin-go/models/system"
+	"github.com/gjssss/soybean-admin-go/utils"
 )
 
 type UserRepository struct{}
 
-func (r *UserRepository) FindAll(page common.PaginationParam) ([]system.User, int64, error) {
+func (r *UserRepository) FindAll(page utils.PaginationParam) ([]system.User, int64, error) {
 	var users []system.User
 	if err := global.DB.Offset(page.PageSize * (page.Current - 1)).Limit(page.PageSize).Find(&users).Error; err != nil {
 		return nil, 0, err

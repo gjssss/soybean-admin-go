@@ -10,7 +10,15 @@ import (
 
 type RoleController struct{}
 
-// 获取所有角色（GET）
+// @Summary 获取所有角色
+// @Description 获取所有角色列表（不分页）
+// @Tags 角色管理
+// @Accept json
+// @Produce json
+// @Success 200 {object} utils.Response[[]system.Role] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /roles/all [get]
 func (c *RoleController) GetAllRoles(ctx *gin.Context) {
 	roles, err := SystemService.Role.GetAllRoles()
 	if err != nil {
@@ -20,7 +28,17 @@ func (c *RoleController) GetAllRoles(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(roles))
 }
 
-// 获取分页角色（GET）
+// @Summary 获取分页角色列表
+// @Description 获取分页的角色列表
+// @Tags 角色管理
+// @Accept json
+// @Produce json
+// @Param page query int false "页码" default(1)
+// @Param pageSize query int false "每页条数" default(10)
+// @Success 200 {object} utils.Response[utils.Pagination[[]system.Role]] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /roles [get]
 func (c *RoleController) GetRoles(ctx *gin.Context) {
 	page := utils.ParsePagination(ctx)
 	roles, count, err := SystemService.Role.GetRoles(page)
@@ -31,7 +49,16 @@ func (c *RoleController) GetRoles(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(utils.NewPagination(roles, page, count)))
 }
 
-// 创建角色（POST）
+// @Summary 创建角色
+// @Description 创建新角色
+// @Tags 角色管理
+// @Accept json
+// @Produce json
+// @Param role body system.Role true "角色信息"
+// @Success 200 {object} utils.Response[system.Role] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /roles [post]
 func (c *RoleController) CreateRole(ctx *gin.Context) {
 	var role system.Role
 	if err := ctx.ShouldBindJSON(&role); err != nil {
@@ -47,7 +74,16 @@ func (c *RoleController) CreateRole(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(role))
 }
 
-// 更新角色（POST）
+// @Summary 更新角色
+// @Description 更新角色信息
+// @Tags 角色管理
+// @Accept json
+// @Produce json
+// @Param role body system.Role true "角色信息"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /roles/update [post]
 func (c *RoleController) UpdateRole(ctx *gin.Context) {
 	var role system.Role
 	if err := ctx.ShouldBindJSON(&role); err != nil {
@@ -68,7 +104,16 @@ func (c *RoleController) UpdateRole(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("更新成功"))
 }
 
-// 删除角色（POST）
+// @Summary 删除角色
+// @Description 删除指定角色
+// @Tags 角色管理
+// @Accept json
+// @Produce json
+// @Param id body object{id=uint} true "角色ID"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /roles/delete [post]
 func (c *RoleController) DeleteRole(ctx *gin.Context) {
 	var params struct {
 		ID uint `json:"id" binding:"required"`
@@ -87,7 +132,16 @@ func (c *RoleController) DeleteRole(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("删除成功"))
 }
 
-// 批量删除角色（POST）
+// @Summary 批量删除角色
+// @Description 批量删除多个角色
+// @Tags 角色管理
+// @Accept json
+// @Produce json
+// @Param ids body object{ids=[]uint} true "角色ID列表"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /roles/batchDelete [post]
 func (c *RoleController) BatchDeleteRole(ctx *gin.Context) {
 	var params struct {
 		IDs []uint `json:"ids" binding:"required"`
@@ -111,7 +165,16 @@ func (c *RoleController) BatchDeleteRole(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("批量删除成功"))
 }
 
-// 更新角色菜单（POST）
+// @Summary 更新角色菜单
+// @Description 更新角色的菜单权限
+// @Tags 角色管理
+// @Accept json
+// @Produce json
+// @Param menuInfo body object{roleId=uint,menuIds=[]uint} true "角色菜单信息"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /roles/menus [post]
 func (c *RoleController) UpdateRoleMenu(ctx *gin.Context) {
 	var params struct {
 		RoleID  uint   `json:"roleId" binding:"required"`
@@ -131,7 +194,16 @@ func (c *RoleController) UpdateRoleMenu(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("更新成功"))
 }
 
-// 更新角色按钮权限（POST）
+// @Summary 更新角色按钮权限
+// @Description 更新角色的按钮权限
+// @Tags 角色管理
+// @Accept json
+// @Produce json
+// @Param buttonInfo body object{roleId=uint,buttonIds=[]uint} true "角色按钮信息"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /roles/buttons [post]
 func (c *RoleController) UpdateRoleButton(ctx *gin.Context) {
 	var params struct {
 		RoleID    uint   `json:"roleId" binding:"required"`

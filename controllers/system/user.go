@@ -11,7 +11,17 @@ import (
 
 type UserController struct{}
 
-// 获取所有用户（GET）
+// @Summary 获取用户列表
+// @Description 获取分页的用户列表
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param page query int false "页码" default(1)
+// @Param pageSize query int false "每页条数" default(10)
+// @Success 200 {object} utils.Response[utils.Pagination[[]system.User]] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /users [get]
 func (c *UserController) GetAllUsers(ctx *gin.Context) {
 	page := utils.ParsePagination(ctx)
 	users, count, err := SystemService.User.GetAllUsers(page)
@@ -22,7 +32,15 @@ func (c *UserController) GetAllUsers(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(utils.NewPagination(users, page, count)))
 }
 
-// 获取用户信息（GET）
+// @Summary 获取用户信息
+// @Description 获取当前登录用户的详细信息
+// @Tags 认证
+// @Accept json
+// @Produce json
+// @Success 200 {object} utils.Response[system.User] "成功"
+// @Failure 401 {object} utils.Response[string] "认证失败"
+// @Security ApiKeyAuth
+// @Router /auth/getUserInfo [get]
 func (c *UserController) GetUserInfo(ctx *gin.Context) {
 	uid, _ := ctx.Get("userID")
 	user, err := SystemService.User.GetUserById(uid.(uint))
@@ -33,7 +51,16 @@ func (c *UserController) GetUserInfo(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(user))
 }
 
-// 创建用户（POST）
+// @Summary 创建用户
+// @Description 创建新用户
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param user body system.User true "用户信息"
+// @Success 200 {object} utils.Response[system.User] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /users [post]
 func (c *UserController) CreateUser(ctx *gin.Context) {
 	var user system.User
 	if err := ctx.ShouldBindJSON(&user); err != nil {
@@ -50,7 +77,16 @@ func (c *UserController) CreateUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(createdUser))
 }
 
-// 更新用户密码（POST）
+// @Summary 更新用户密码
+// @Description 更新用户密码
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param passwordInfo body object{id=uint,password=string} true "密码信息"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /users/password [post]
 func (c *UserController) UpdateUserPassword(ctx *gin.Context) {
 	var params struct {
 		ID       uint   `json:"id" binding:"required"`
@@ -71,7 +107,16 @@ func (c *UserController) UpdateUserPassword(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("密码更新成功"))
 }
 
-// 删除用户（POST）
+// @Summary 删除用户
+// @Description 删除指定用户
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param user body system.User true "用户信息"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /users/delete [post]
 func (c *UserController) DeleteUser(ctx *gin.Context) {
 	var user system.User
 	if err := ctx.ShouldBindJSON(&user); err != nil {
@@ -86,7 +131,16 @@ func (c *UserController) DeleteUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("用户删除成功"))
 }
 
-// 批量删除用户（POST）
+// @Summary 批量删除用户
+// @Description 批量删除多个用户
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param ids body []uint true "用户ID列表"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /users/batchDelete [post]
 func (c *UserController) BatchDeleteUser(ctx *gin.Context) {
 	var ids []uint
 	if err := ctx.ShouldBindJSON(&ids); err != nil {
@@ -101,7 +155,16 @@ func (c *UserController) BatchDeleteUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("批量删除成功"))
 }
 
-// 更新用户角色（POST）
+// @Summary 更新用户角色
+// @Description 更新用户的角色列表
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param roleInfo body object{id=uint,roleIds=[]uint} true "用户角色信息"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /users/roles [post]
 func (c *UserController) UpdateUserRoles(ctx *gin.Context) {
 	var params struct {
 		UserID  uint   `json:"id" binding:"required"`
@@ -121,7 +184,15 @@ func (c *UserController) UpdateUserRoles(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("更新用户角色成功"))
 }
 
-// 登录（POST）
+// @Summary 用户登录
+// @Description 用户登录接口，获取token
+// @Tags 认证
+// @Accept json
+// @Produce json
+// @Param user body object{userName=string,password=string} true "登录信息"
+// @Success 200 {object} utils.Response[system.Token] "成功"
+// @Failure 401 {object} utils.Response[string] "认证失败"
+// @Router /auth/login [post]
 func (c *UserController) Login(ctx *gin.Context) {
 	var user system.User
 	if err := ctx.ShouldBindJSON(&user); err != nil {
@@ -136,7 +207,16 @@ func (c *UserController) Login(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(token))
 }
 
-// 刷新Token（POST）
+// @Summary 刷新Token
+// @Description 使用刷新令牌获取新的访问令牌
+// @Tags 认证
+// @Accept json
+// @Produce json
+// @Param refreshInfo body object{refreshToken=string} true "刷新令牌"
+// @Success 200 {object} utils.Response[system.Token] "成功"
+// @Failure 401 {object} utils.Response[string] "认证失败"
+// @Security ApiKeyAuth
+// @Router /auth/refreshToken [post]
 func (c *UserController) RefreshToken(ctx *gin.Context) {
 	var data struct {
 		RefreshToken string `json:"refreshToken" binding:"required"`
@@ -154,7 +234,16 @@ func (c *UserController) RefreshToken(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(t))
 }
 
-// 检查用户名是否存在（GET）
+// @Summary 检查用户名是否存在
+// @Description 检查用户名是否已被使用
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param userName query string true "用户名"
+// @Success 200 {object} utils.Response[utils.ExistsResult] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /users/checkUsername [get]
 func (c *UserController) CheckUserNameExists(ctx *gin.Context) {
 	userName := ctx.Query("userName")
 	if userName == "" {
@@ -162,10 +251,19 @@ func (c *UserController) CheckUserNameExists(ctx *gin.Context) {
 		return
 	}
 	exists := SystemService.User.CheckUserNameExists(userName)
-	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(gin.H{"exists": exists}))
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(utils.ExistsResult{Exists: exists}))
 }
 
-// 获取用户角色列表（GET）
+// @Summary 获取用户角色
+// @Description 获取指定用户的角色列表
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param id query uint true "用户ID"
+// @Success 200 {object} utils.Response[[]system.Role] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /users/roles [get]
 func (c *UserController) GetUserRoles(ctx *gin.Context) {
 	userID, err := strconv.ParseUint(ctx.Query("id"), 10, 32)
 	if err != nil {
