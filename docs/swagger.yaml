@@ -234,6 +234,15 @@ definitions:
       msg:
         type: string
     type: object
+  utils.Response-system_Button:
+    properties:
+      code:
+        type: string
+      data:
+        $ref: '#/definitions/system.Button'
+      msg:
+        type: string
+    type: object
   utils.Response-system_Role:
     properties:
       code:
@@ -411,6 +420,97 @@ paths:
       summary: 获取所有按钮
       tags:
       - 按钮管理
+    post:
+      consumes:
+      - application/json
+      description: 创建新的按钮
+      parameters:
+      - description: 按钮信息
+        in: body
+        name: button
+        required: true
+        schema:
+          $ref: '#/definitions/system.Button'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.Response-system_Button'
+        "400":
+          description: 错误
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建按钮
+      tags:
+      - 按钮管理
+  /buttons/batchDelete:
+    post:
+      consumes:
+      - application/json
+      description: 批量删除多个按钮
+      parameters:
+      - description: 按钮ID列表
+        in: body
+        name: ids
+        required: true
+        schema:
+          properties:
+            ids:
+              items:
+                type: integer
+              type: array
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+        "400":
+          description: 错误
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+      security:
+      - ApiKeyAuth: []
+      summary: 批量删除按钮
+      tags:
+      - 按钮管理
+  /buttons/delete:
+    post:
+      consumes:
+      - application/json
+      description: 删除指定按钮
+      parameters:
+      - description: 按钮ID
+        in: body
+        name: id
+        required: true
+        schema:
+          properties:
+            id:
+              type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+        "400":
+          description: 错误
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除按钮
+      tags:
+      - 按钮管理
   /buttons/role:
     get:
       consumes:
@@ -436,6 +536,34 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 获取角色按钮
+      tags:
+      - 按钮管理
+  /buttons/update:
+    post:
+      consumes:
+      - application/json
+      description: 更新按钮信息
+      parameters:
+      - description: 按钮信息
+        in: body
+        name: button
+        required: true
+        schema:
+          $ref: '#/definitions/system.Button'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+        "400":
+          description: 错误
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+      security:
+      - ApiKeyAuth: []
+      summary: 更新按钮
       tags:
       - 按钮管理
   /buttons/user:

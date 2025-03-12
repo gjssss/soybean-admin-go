@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gjssss/soybean-admin-go/models/system"
 	"github.com/gjssss/soybean-admin-go/utils"
 )
 
@@ -81,4 +82,130 @@ func (c *ButtonController) GetUserButtons(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(buttons))
+}
+
+// @Summary 创建按钮
+// @Description 创建新的按钮
+// @Tags 按钮管理
+// @Accept json
+// @Produce json
+// @Param button body system.Button true "按钮信息"
+// @Success 200 {object} utils.Response[system.Button] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /buttons [post]
+func (c *ButtonController) CreateButton(ctx *gin.Context) {
+	var button system.Button
+	if err := ctx.ShouldBindJSON(&button); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("请求参数无效: "+err.Error()))
+		return
+	}
+
+	if button.Code == "" {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("按钮代码不能为空"))
+		return
+	}
+
+	if err := SystemService.Button.CreateButton(&button); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("创建按钮失败: "+err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(button))
+}
+
+// @Summary 更新按钮
+// @Description 更新按钮信息
+// @Tags 按钮管理
+// @Accept json
+// @Produce json
+// @Param button body system.Button true "按钮信息"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /buttons/update [post]
+func (c *ButtonController) UpdateButton(ctx *gin.Context) {
+	var button system.Button
+	if err := ctx.ShouldBindJSON(&button); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("请求参数无效: "+err.Error()))
+		return
+	}
+
+	if button.ID == 0 {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("按钮ID不能为空"))
+		return
+	}
+
+	if button.Code == "" {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("按钮代码不能为空"))
+		return
+	}
+
+	if err := SystemService.Button.UpdateButton(&button); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("更新按钮失败: "+err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("更新成功"))
+}
+
+// @Summary 删除按钮
+// @Description 删除指定按钮
+// @Tags 按钮管理
+// @Accept json
+// @Produce json
+// @Param id body object{id=uint} true "按钮ID"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /buttons/delete [post]
+func (c *ButtonController) DeleteButton(ctx *gin.Context) {
+	var params struct {
+		ID uint `json:"id" binding:"required"`
+	}
+
+	if err := ctx.ShouldBindJSON(&params); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("请求参数无效: "+err.Error()))
+		return
+	}
+
+	if err := SystemService.Button.DeleteButton(params.ID); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("删除按钮失败: "+err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("删除成功"))
+}
+
+// @Summary 批量删除按钮
+// @Description 批量删除多个按钮
+// @Tags 按钮管理
+// @Accept json
+// @Produce json
+// @Param ids body object{ids=[]uint} true "按钮ID列表"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /buttons/batchDelete [post]
+func (c *ButtonController) BatchDeleteButton(ctx *gin.Context) {
+	var params struct {
+		IDs []uint `json:"ids" binding:"required"`
+	}
+
+	if err := ctx.ShouldBindJSON(&params); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("请求参数无效: "+err.Error()))
+		return
+	}
+
+	if len(params.IDs) == 0 {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("至少选择一个按钮进行删除"))
+		return
+	}
+
+	if err := SystemService.Button.BatchDeleteButton(params.IDs); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("批量删除按钮失败: "+err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("批量删除成功"))
 }

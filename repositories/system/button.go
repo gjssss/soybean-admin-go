@@ -33,3 +33,31 @@ func (c *ButtonRepository) GetButtonsByRoleId(roleId uint) ([]system.Button, err
 	`, roleId).Scan(&buttons).Error
 	return buttons, err
 }
+
+func (c *ButtonRepository) CreateButton(button *system.Button) error {
+	return global.DB.Create(button).Error
+}
+
+func (c *ButtonRepository) UpdateButton(button *system.Button) error {
+	return global.DB.Model(&system.Button{}).Where("id = ?", button.ID).Updates(button).Error
+}
+
+func (c *ButtonRepository) DeleteButton(id uint) error {
+	return global.DB.Delete(&system.Button{}, id).Error
+}
+
+func (c *ButtonRepository) BatchDeleteButton(ids []uint) error {
+	return global.DB.Delete(&system.Button{}, ids).Error
+}
+
+func (c *ButtonRepository) IsCodeExist(code string, excludeID ...uint) (bool, error) {
+	var count int64
+	query := global.DB.Model(&system.Button{}).Where("code = ?", code)
+
+	if len(excludeID) > 0 && excludeID[0] > 0 {
+		query = query.Where("id != ?", excludeID[0])
+	}
+
+	err := query.Count(&count).Error
+	return count > 0, err
+}

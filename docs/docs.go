@@ -183,6 +183,152 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "创建新的按钮",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "按钮管理"
+                ],
+                "summary": "创建按钮",
+                "parameters": [
+                    {
+                        "description": "按钮信息",
+                        "name": "button",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/system.Button"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-system_Button"
+                        }
+                    },
+                    "400": {
+                        "description": "错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    }
+                }
+            }
+        },
+        "/buttons/batchDelete": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "批量删除多个按钮",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "按钮管理"
+                ],
+                "summary": "批量删除按钮",
+                "parameters": [
+                    {
+                        "description": "按钮ID列表",
+                        "name": "ids",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ids": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    },
+                    "400": {
+                        "description": "错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    }
+                }
+            }
+        },
+        "/buttons/delete": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "删除指定按钮",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "按钮管理"
+                ],
+                "summary": "删除按钮",
+                "parameters": [
+                    {
+                        "description": "按钮ID",
+                        "name": "id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    },
+                    "400": {
+                        "description": "错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    }
+                }
             }
         },
         "/buttons/role": {
@@ -217,6 +363,51 @@ const docTemplate = `{
                         "description": "成功",
                         "schema": {
                             "$ref": "#/definitions/utils.Response-array_system_Button"
+                        }
+                    },
+                    "400": {
+                        "description": "错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    }
+                }
+            }
+        },
+        "/buttons/update": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "更新按钮信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "按钮管理"
+                ],
+                "summary": "更新按钮",
+                "parameters": [
+                    {
+                        "description": "按钮信息",
+                        "name": "button",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/system.Button"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
                         }
                     },
                     "400": {
@@ -1682,6 +1873,20 @@ const docTemplate = `{
                 },
                 "data": {
                     "type": "string"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.Response-system_Button": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/system.Button"
                 },
                 "msg": {
                     "type": "string"
