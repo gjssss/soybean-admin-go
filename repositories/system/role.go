@@ -83,3 +83,9 @@ func (c *RoleRepository) UpdateRoleButton(roleID uint, buttonIDs []uint) error {
 	}
 	return global.DB.Model(&role).Association("Buttons").Append(&buttons)
 }
+
+func (r *RoleRepository) RoleExists(roleID uint) (bool, error) {
+	var count int64
+	err := global.DB.Model(&system.Role{}).Where("id = ?", roleID).Count(&count).Error
+	return count > 0, err
+}

@@ -26,17 +26,27 @@ func (s *UserService) CreateUser(user system.User) (system.User, error) {
 	return SystemRepositories.User.Create(user)
 }
 
-func (s *UserService) UpdateUserPassword(user system.User) (system.User, error) {
+func (s *UserService) UpdateUserPassword(user system.User) error {
 	var err error
 	user.Password, err = utils.EncodePassword(user.Password)
 	if err != nil {
-		return system.User{}, err
+		return err
 	}
-	return SystemRepositories.User.Update(user)
+	return SystemRepositories.User.UpdatePassword(user)
 }
 
 func (s *UserService) DeleteUser(user system.User) error {
 	return SystemRepositories.User.Delete(user)
+}
+
+func (s *UserService) BatchDeleteUser(ids []uint) error {
+	for _, id := range ids {
+		err := s.DeleteUser(system.User{ID: id})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (s *UserService) GetUserById(id uint) (system.UserDTO, error) {
@@ -89,4 +99,40 @@ func (s *UserService) Refresh(accessToken string, refreshToken string) (Token, e
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, err
+}
+
+func (s *UserService) UpdateUserRoles(userID uint, roleIDs []uint) error {
+	// 检查用户是否存在
+	_, err := SystemRepositories.User.FindById(userID)
+	if err != nil {
+		return errors.New("用户不存在")
+	}
+
+	// 检查每个角色是否存在
+	for _, roleID := range roleIDs {
+		exists, err := SystemRepositories.Role.RoleExists(roleID)
+		if err != nil || !exists {
+			return errors.New("角色不存在或ID无效")
+		}
+	}
+
+	// 更新用户的角色
+	return SystemRepositories.User.UpdateUserRoles(userID, roleIDs)
+}
+
+// 添加检查用户名是否存在的方法
+func (s *UserService) CheckUserNameExists(userName string) bool {
+	_, err := SystemRepositories.User.FindByUsername(userName)
+	return err == nil // 如果没有错误，说明找到了用户，用户名存在
+}
+
+// 获取用户的角色列表
+func (s *UserService) GetUserRoles(userID uint) ([]system.Role, error) {
+	// 获取用户信息，包括关联的角色
+	user, err := SystemRepositories.User.FindById(userID)
+	if err != nil {
+		return nil, errors.New("用户不存在")
+	}
+
+	return user.Roles, nil
 }

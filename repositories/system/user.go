@@ -34,6 +34,13 @@ func (r *UserRepository) Update(user system.User) (system.User, error) {
 	return user, nil
 }
 
+func (r *UserRepository) UpdatePassword(user system.User) error {
+	if err := global.DB.Model(&user).Update("password", user.Password).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *UserRepository) Delete(user system.User) error {
 	if err := global.DB.Delete(&user).Error; err != nil {
 		return err
@@ -55,4 +62,19 @@ func (r *UserRepository) FindByUsername(username string) (system.User, error) {
 		return system.User{}, err
 	}
 	return user, nil
+}
+
+func (r *UserRepository) UpdateUserRoles(userID uint, roleIDs []uint) error {
+	// 先清除用户现有的角色关联
+	if err := global.DB.Model(&system.User{ID: userID}).Association("Roles").Clear(); err != nil {
+		return err
+	}
+
+	// 添加新的角色关联
+	var roles []system.Role
+	for _, roleID := range roleIDs {
+		roles = append(roles, system.Role{ID: roleID})
+	}
+
+	return global.DB.Model(&system.User{ID: userID}).Association("Roles").Append(roles)
 }
