@@ -41,7 +41,7 @@ const docTemplate = `{
                     "200": {
                         "description": "成功",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response-system_User"
+                            "$ref": "#/definitions/utils.Response-system_UserDTO"
                         }
                     },
                     "401": {
@@ -1537,6 +1537,38 @@ const docTemplate = `{
                 }
             }
         },
+        "system.UserDTO": {
+            "type": "object",
+            "properties": {
+                "buttons": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
         "utils.ExistsResult": {
             "type": "object",
             "properties": {
@@ -1692,6 +1724,20 @@ const docTemplate = `{
                 },
                 "data": {
                     "$ref": "#/definitions/system.User"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.Response-system_UserDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/system.UserDTO"
                 },
                 "msg": {
                     "type": "string"

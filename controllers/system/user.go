@@ -37,7 +37,7 @@ func (c *UserController) GetAllUsers(ctx *gin.Context) {
 // @Tags 认证
 // @Accept json
 // @Produce json
-// @Success 200 {object} utils.Response[system.User] "成功"
+// @Success 200 {object} utils.Response[system.UserDTO] "成功"
 // @Failure 401 {object} utils.Response[string] "认证失败"
 // @Security ApiKeyAuth
 // @Router /auth/getUserInfo [get]

@@ -136,6 +136,27 @@ definitions:
       userName:
         type: string
     type: object
+  system.UserDTO:
+    properties:
+      buttons:
+        items:
+          type: string
+        type: array
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      id:
+        type: integer
+      roles:
+        items:
+          type: string
+        type: array
+      updatedAt:
+        type: string
+      userName:
+        type: string
+    type: object
   utils.ExistsResult:
     properties:
       exists:
@@ -240,6 +261,15 @@ definitions:
       msg:
         type: string
     type: object
+  utils.Response-system_UserDTO:
+    properties:
+      code:
+        type: string
+      data:
+        $ref: '#/definitions/system.UserDTO'
+      msg:
+        type: string
+    type: object
   utils.Response-utils_ExistsResult:
     properties:
       code:
@@ -288,7 +318,7 @@ paths:
         "200":
           description: 成功
           schema:
-            $ref: '#/definitions/utils.Response-system_User'
+            $ref: '#/definitions/utils.Response-system_UserDTO'
         "401":
           description: 认证失败
           schema:
