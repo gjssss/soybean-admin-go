@@ -20,5 +20,11 @@ func SystemManageRoutes(r *gin.Engine) {
 		routes.PUT("/updateMenu", SystemControllers.Menu.UpdateMenu)
 		routes.DELETE("/deleteMenu", SystemControllers.Menu.DeleteMenu)
 		routes.DELETE("/batchDeleteMenu", SystemControllers.Menu.BatchDeleteMenu)
+		routes.POST("/createRole", SystemControllers.Role.CreateRole)
+		routes.PUT("/updateRole", SystemControllers.Role.UpdateRole)
+		routes.DELETE("/deleteRole", SystemControllers.Role.DeleteRole)
+		routes.DELETE("/batchDeleteRole", SystemControllers.Role.BatchDeleteRole)
+		routes.PUT("/updateRoleMenu", SystemControllers.Role.UpdateRoleMenu)
+		routes.PUT("/updateRoleButton", SystemControllers.Role.UpdateRoleButton)
 	}
 }
