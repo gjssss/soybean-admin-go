@@ -778,14 +778,14 @@ const docTemplate = `{
                         "type": "integer",
                         "default": 1,
                         "description": "页码",
-                        "name": "page",
+                        "name": "current",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "default": 10,
                         "description": "每页条数",
-                        "name": "pageSize",
+                        "name": "size",
                         "in": "query"
                     }
                 ],
@@ -793,7 +793,7 @@ const docTemplate = `{
                     "200": {
                         "description": "成功",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response-utils_Pagination-array_system_Role"
+                            "$ref": "#/definitions/utils.Response-utils_Pagination-system_Role"
                         }
                     },
                     "400": {
@@ -1165,14 +1165,14 @@ const docTemplate = `{
                         "type": "integer",
                         "default": 1,
                         "description": "页码",
-                        "name": "page",
+                        "name": "current",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "default": 10,
                         "description": "每页条数",
-                        "name": "pageSize",
+                        "name": "size",
                         "in": "query"
                     }
                 ],
@@ -1180,7 +1180,7 @@ const docTemplate = `{
                     "200": {
                         "description": "成功",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response-utils_Pagination-array_system_User"
+                            "$ref": "#/definitions/utils.Response-utils_Pagination-system_User"
                         }
                     },
                     "400": {
@@ -1539,6 +1539,19 @@ const docTemplate = `{
         },
         "system.Menu": {
             "type": "object",
+            "required": [
+                "constant",
+                "hideInMenu",
+                "i18nKey",
+                "iconType",
+                "keepAlive",
+                "menuName",
+                "menuType",
+                "multiTab",
+                "order",
+                "routeName",
+                "routePath"
+            ],
             "properties": {
                 "activeMenu": {
                     "description": "激活的菜单名",
@@ -1562,10 +1575,7 @@ const docTemplate = `{
                 "constant": {
                     "type": "boolean"
                 },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
+                "createTime": {
                     "type": "string"
                 },
                 "fixedIndexInTab": {
@@ -1628,7 +1638,7 @@ const docTemplate = `{
                 "status": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updateTime": {
                     "type": "string"
                 }
             }
@@ -1652,9 +1662,6 @@ const docTemplate = `{
         },
         "system.Role": {
             "type": "object",
-            "required": [
-                "roleName"
-            ],
             "properties": {
                 "buttons": {
                     "type": "array",
@@ -1663,9 +1670,6 @@ const docTemplate = `{
                     }
                 },
                 "createTime": {
-                    "type": "string"
-                },
-                "deleteTime": {
                     "type": "string"
                 },
                 "id": {
@@ -1690,6 +1694,10 @@ const docTemplate = `{
         },
         "system.Token": {
             "type": "object",
+            "required": [
+                "refreshToken",
+                "token"
+            ],
             "properties": {
                 "refreshToken": {
                     "type": "string"
@@ -1702,10 +1710,7 @@ const docTemplate = `{
         "system.User": {
             "type": "object",
             "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
+                "createTime": {
                     "type": "string"
                 },
                 "id": {
@@ -1720,7 +1725,7 @@ const docTemplate = `{
                         "$ref": "#/definitions/system.Role"
                     }
                 },
-                "updatedAt": {
+                "updateTime": {
                     "type": "string"
                 },
                 "userName": {
@@ -1737,10 +1742,7 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
+                "createTime": {
                     "type": "string"
                 },
                 "id": {
@@ -1752,7 +1754,7 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
-                "updatedAt": {
+                "updateTime": {
                     "type": "string"
                 },
                 "userName": {
@@ -1768,8 +1770,14 @@ const docTemplate = `{
                 }
             }
         },
-        "utils.Pagination-array_system_Role": {
+        "utils.Pagination-system_Role": {
             "type": "object",
+            "required": [
+                "current",
+                "records",
+                "size",
+                "total"
+            ],
             "properties": {
                 "current": {
                     "type": "integer"
@@ -1777,10 +1785,7 @@ const docTemplate = `{
                 "records": {
                     "type": "array",
                     "items": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/system.Role"
-                        }
+                        "$ref": "#/definitions/system.Role"
                     }
                 },
                 "size": {
@@ -1791,8 +1796,14 @@ const docTemplate = `{
                 }
             }
         },
-        "utils.Pagination-array_system_User": {
+        "utils.Pagination-system_User": {
             "type": "object",
+            "required": [
+                "current",
+                "records",
+                "size",
+                "total"
+            ],
             "properties": {
                 "current": {
                     "type": "integer"
@@ -1800,10 +1811,7 @@ const docTemplate = `{
                 "records": {
                     "type": "array",
                     "items": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/system.User"
-                        }
+                        "$ref": "#/definitions/system.User"
                     }
                 },
                 "size": {
@@ -1816,6 +1824,11 @@ const docTemplate = `{
         },
         "utils.Response-array_system_Button": {
             "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
             "properties": {
                 "code": {
                     "type": "string"
@@ -1833,6 +1846,11 @@ const docTemplate = `{
         },
         "utils.Response-array_system_Menu": {
             "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
             "properties": {
                 "code": {
                     "type": "string"
@@ -1850,6 +1868,11 @@ const docTemplate = `{
         },
         "utils.Response-array_system_Role": {
             "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
             "properties": {
                 "code": {
                     "type": "string"
@@ -1867,6 +1890,11 @@ const docTemplate = `{
         },
         "utils.Response-string": {
             "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
             "properties": {
                 "code": {
                     "type": "string"
@@ -1881,6 +1909,11 @@ const docTemplate = `{
         },
         "utils.Response-system_Button": {
             "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
             "properties": {
                 "code": {
                     "type": "string"
@@ -1895,6 +1928,11 @@ const docTemplate = `{
         },
         "utils.Response-system_Role": {
             "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
             "properties": {
                 "code": {
                     "type": "string"
@@ -1909,6 +1947,11 @@ const docTemplate = `{
         },
         "utils.Response-system_Token": {
             "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
             "properties": {
                 "code": {
                     "type": "string"
@@ -1923,6 +1966,11 @@ const docTemplate = `{
         },
         "utils.Response-system_User": {
             "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
             "properties": {
                 "code": {
                     "type": "string"
@@ -1937,6 +1985,11 @@ const docTemplate = `{
         },
         "utils.Response-system_UserDTO": {
             "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
             "properties": {
                 "code": {
                     "type": "string"
@@ -1951,6 +2004,11 @@ const docTemplate = `{
         },
         "utils.Response-utils_ExistsResult": {
             "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
             "properties": {
                 "code": {
                     "type": "string"
@@ -1963,28 +2021,38 @@ const docTemplate = `{
                 }
             }
         },
-        "utils.Response-utils_Pagination-array_system_Role": {
+        "utils.Response-utils_Pagination-system_Role": {
             "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
             "properties": {
                 "code": {
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/utils.Pagination-array_system_Role"
+                    "$ref": "#/definitions/utils.Pagination-system_Role"
                 },
                 "msg": {
                     "type": "string"
                 }
             }
         },
-        "utils.Response-utils_Pagination-array_system_User": {
+        "utils.Response-utils_Pagination-system_User": {
             "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
             "properties": {
                 "code": {
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/utils.Pagination-array_system_User"
+                    "$ref": "#/definitions/utils.Pagination-system_User"
                 },
                 "msg": {
                     "type": "string"

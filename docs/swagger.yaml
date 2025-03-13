@@ -26,9 +26,7 @@ definitions:
         type: string
       constant:
         type: boolean
-      createdAt:
-        type: string
-      deletedAt:
+      createTime:
         type: string
       fixedIndexInTab:
         type: integer
@@ -71,8 +69,20 @@ definitions:
         type: string
       status:
         type: string
-      updatedAt:
+      updateTime:
         type: string
+    required:
+    - constant
+    - hideInMenu
+    - i18nKey
+    - iconType
+    - keepAlive
+    - menuName
+    - menuType
+    - multiTab
+    - order
+    - routeName
+    - routePath
     type: object
   system.MenuQuery:
     properties:
@@ -93,8 +103,6 @@ definitions:
         type: array
       createTime:
         type: string
-      deleteTime:
-        type: string
       id:
         type: integer
       menu:
@@ -107,8 +115,6 @@ definitions:
         type: string
       updateTime:
         type: string
-    required:
-    - roleName
     type: object
   system.Token:
     properties:
@@ -116,12 +122,13 @@ definitions:
         type: string
       token:
         type: string
+    required:
+    - refreshToken
+    - token
     type: object
   system.User:
     properties:
-      createdAt:
-        type: string
-      deletedAt:
+      createTime:
         type: string
       id:
         type: integer
@@ -131,7 +138,7 @@ definitions:
         items:
           $ref: '#/definitions/system.Role'
         type: array
-      updatedAt:
+      updateTime:
         type: string
       userName:
         type: string
@@ -142,9 +149,7 @@ definitions:
         items:
           type: string
         type: array
-      createdAt:
-        type: string
-      deletedAt:
+      createTime:
         type: string
       id:
         type: integer
@@ -152,7 +157,7 @@ definitions:
         items:
           type: string
         type: array
-      updatedAt:
+      updateTime:
         type: string
       userName:
         type: string
@@ -162,35 +167,41 @@ definitions:
       exists:
         type: boolean
     type: object
-  utils.Pagination-array_system_Role:
+  utils.Pagination-system_Role:
     properties:
       current:
         type: integer
       records:
         items:
-          items:
-            $ref: '#/definitions/system.Role'
-          type: array
+          $ref: '#/definitions/system.Role'
         type: array
       size:
         type: integer
       total:
         type: integer
+    required:
+    - current
+    - records
+    - size
+    - total
     type: object
-  utils.Pagination-array_system_User:
+  utils.Pagination-system_User:
     properties:
       current:
         type: integer
       records:
         items:
-          items:
-            $ref: '#/definitions/system.User'
-          type: array
+          $ref: '#/definitions/system.User'
         type: array
       size:
         type: integer
       total:
         type: integer
+    required:
+    - current
+    - records
+    - size
+    - total
     type: object
   utils.Response-array_system_Button:
     properties:
@@ -202,6 +213,10 @@ definitions:
         type: array
       msg:
         type: string
+    required:
+    - code
+    - data
+    - msg
     type: object
   utils.Response-array_system_Menu:
     properties:
@@ -213,6 +228,10 @@ definitions:
         type: array
       msg:
         type: string
+    required:
+    - code
+    - data
+    - msg
     type: object
   utils.Response-array_system_Role:
     properties:
@@ -224,6 +243,10 @@ definitions:
         type: array
       msg:
         type: string
+    required:
+    - code
+    - data
+    - msg
     type: object
   utils.Response-string:
     properties:
@@ -233,6 +256,10 @@ definitions:
         type: string
       msg:
         type: string
+    required:
+    - code
+    - data
+    - msg
     type: object
   utils.Response-system_Button:
     properties:
@@ -242,6 +269,10 @@ definitions:
         $ref: '#/definitions/system.Button'
       msg:
         type: string
+    required:
+    - code
+    - data
+    - msg
     type: object
   utils.Response-system_Role:
     properties:
@@ -251,6 +282,10 @@ definitions:
         $ref: '#/definitions/system.Role'
       msg:
         type: string
+    required:
+    - code
+    - data
+    - msg
     type: object
   utils.Response-system_Token:
     properties:
@@ -260,6 +295,10 @@ definitions:
         $ref: '#/definitions/system.Token'
       msg:
         type: string
+    required:
+    - code
+    - data
+    - msg
     type: object
   utils.Response-system_User:
     properties:
@@ -269,6 +308,10 @@ definitions:
         $ref: '#/definitions/system.User'
       msg:
         type: string
+    required:
+    - code
+    - data
+    - msg
     type: object
   utils.Response-system_UserDTO:
     properties:
@@ -278,6 +321,10 @@ definitions:
         $ref: '#/definitions/system.UserDTO'
       msg:
         type: string
+    required:
+    - code
+    - data
+    - msg
     type: object
   utils.Response-utils_ExistsResult:
     properties:
@@ -287,24 +334,36 @@ definitions:
         $ref: '#/definitions/utils.ExistsResult'
       msg:
         type: string
+    required:
+    - code
+    - data
+    - msg
     type: object
-  utils.Response-utils_Pagination-array_system_Role:
+  utils.Response-utils_Pagination-system_Role:
     properties:
       code:
         type: string
       data:
-        $ref: '#/definitions/utils.Pagination-array_system_Role'
+        $ref: '#/definitions/utils.Pagination-system_Role'
       msg:
         type: string
+    required:
+    - code
+    - data
+    - msg
     type: object
-  utils.Response-utils_Pagination-array_system_User:
+  utils.Response-utils_Pagination-system_User:
     properties:
       code:
         type: string
       data:
-        $ref: '#/definitions/utils.Pagination-array_system_User'
+        $ref: '#/definitions/utils.Pagination-system_User'
       msg:
         type: string
+    required:
+    - code
+    - data
+    - msg
     type: object
 host: localhost:8080
 info:
@@ -784,12 +843,12 @@ paths:
       - default: 1
         description: 页码
         in: query
-        name: page
+        name: current
         type: integer
       - default: 10
         description: 每页条数
         in: query
-        name: pageSize
+        name: size
         type: integer
       produces:
       - application/json
@@ -797,7 +856,7 @@ paths:
         "200":
           description: 成功
           schema:
-            $ref: '#/definitions/utils.Response-utils_Pagination-array_system_Role'
+            $ref: '#/definitions/utils.Response-utils_Pagination-system_Role'
         "400":
           description: 错误
           schema:
@@ -1026,12 +1085,12 @@ paths:
       - default: 1
         description: 页码
         in: query
-        name: page
+        name: current
         type: integer
       - default: 10
         description: 每页条数
         in: query
-        name: pageSize
+        name: size
         type: integer
       produces:
       - application/json
@@ -1039,7 +1098,7 @@ paths:
         "200":
           description: 成功
           schema:
-            $ref: '#/definitions/utils.Response-utils_Pagination-array_system_User'
+            $ref: '#/definitions/utils.Response-utils_Pagination-system_User'
         "400":
           description: 错误
           schema:

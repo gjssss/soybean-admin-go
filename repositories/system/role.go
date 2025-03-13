@@ -11,7 +11,7 @@ type RoleRepository struct{}
 func (c *RoleRepository) GetRoles(page utils.PaginationParam) ([]system.Role, int64, error) {
 	var roles []system.Role
 	var count int64
-	err := global.DB.Offset(page.PageSize * (page.Current - 1)).Limit(page.PageSize).Find(&roles).Error
+	err := global.DB.Offset(page.Size * (page.Current - 1)).Limit(page.Size).Find(&roles).Error
 	if err != nil {
 		return nil, count, err
 	}

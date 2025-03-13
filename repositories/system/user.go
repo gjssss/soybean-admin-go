@@ -10,7 +10,7 @@ type UserRepository struct{}
 
 func (r *UserRepository) FindAll(page utils.PaginationParam) ([]system.User, int64, error) {
 	var users []system.User
-	if err := global.DB.Offset(page.PageSize * (page.Current - 1)).Limit(page.PageSize).Find(&users).Error; err != nil {
+	if err := global.DB.Offset(page.Size * (page.Current - 1)).Limit(page.Size).Find(&users).Error; err != nil {
 		return nil, 0, err
 	}
 	var total int64
@@ -42,6 +42,7 @@ func (r *UserRepository) UpdatePassword(user system.User) error {
 }
 
 func (r *UserRepository) Delete(user system.User) error {
+	println("delete", user.ID)
 	if err := global.DB.Delete(&user).Error; err != nil {
 		return err
 	}

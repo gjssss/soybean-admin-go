@@ -73,8 +73,8 @@ func (s *UserService) GetUserById(id uint) (system.UserDTO, error) {
 }
 
 type Token struct {
-	AccessToken  string `json:"token"`
-	RefreshToken string `json:"refreshToken"`
+	AccessToken  string `json:"token" binding:"required"`
+	RefreshToken string `json:"refreshToken" binding:"required"`
 }
 
 func (s *UserService) Login(username string, password string) (Token, error) {

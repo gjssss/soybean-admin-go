@@ -2,10 +2,12 @@ package system
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type TimeRecord struct {
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt time.Time
+	CreatedAt time.Time      `json:"createTime"`
+	UpdatedAt time.Time      `json:"updateTime"`
+	DeletedAt gorm.DeletedAt `json:"-"`
 }

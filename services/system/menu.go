@@ -14,16 +14,19 @@ func nestedMenu(menus *[]system.Menu) ([]*system.Menu, error) {
 	var err error
 	var cache = make(map[uint]*system.Menu)
 	for _, menu := range *menus {
+		println(menu.ID, menu.MenuName)
 		menu.Children = make([]system.Menu, 0)
-		if menu.ParentID == 0 {
-			_menus = append(_menus, &menu)
-			cache[menu.ID] = &menu
-		} else {
+		cache[menu.ID] = &menu
+	}
+	for _, menu := range cache {
+		if menu.ParentID != 0 {
 			if parent, ok := cache[menu.ParentID]; ok {
-				parent.Children = append(parent.Children, menu)
+				parent.Children = append(parent.Children, *menu)
 			} else {
-				err = errors.New("菜单格式错误，父菜单不存在")
+				err = errors.New("父菜单不存在")
 			}
+		} else {
+			_menus = append(_menus, menu)
 		}
 	}
 	return _menus, err

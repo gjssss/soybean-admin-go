@@ -5,15 +5,15 @@ type Menu struct {
 	ID              uint        `gorm:"primaryKey;" json:"id"`
 	Status          string      `json:"status"`
 	ParentID        uint        `json:"parentId" gorm:"column:parent_id"` // 父菜单ID
-	MenuType        string      `json:"menuType"`
-	MenuName        string      `json:"menuName"`
-	RouteName       string      `json:"routeName"`
-	RoutePath       string      `json:"routePath"`
+	MenuType        string      `json:"menuType" binding:"required"`
+	MenuName        string      `json:"menuName" binding:"required"`
+	RouteName       string      `json:"routeName" binding:"required"`
+	RoutePath       string      `json:"routePath" binding:"required"`
 	Component       string      `json:"component"`
 	Order           int         `json:"order"`
-	I18nKey         string      `json:"i18nKey"`
+	I18nKey         string      `json:"i18nKey" binding:"required"`
 	Icon            string      `json:"icon"`
-	IconType        string      `json:"iconType"`
+	IconType        string      `json:"iconType" binding:"required"`
 	MultiTab        bool        `json:"multiTab"`   // 是否支持多标签
 	HideInMenu      bool        `json:"hideInMenu"` // 是否隐藏菜单
 	ActiveMenu      string      `json:"activeMenu"` // 激活的菜单名

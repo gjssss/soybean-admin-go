@@ -1,9 +1,9 @@
 package utils
 
 type Response[T any] struct {
-	Code string `json:"code"`
-	Data T      `json:"data"`
-	Msg  string `json:"msg"`
+	Code string `json:"code" binding:"required"`
+	Data T      `json:"data" binding:"required"`
+	Msg  string `json:"msg"  binding:"required"`
 }
 
 func NewResponse[T any](code string, data T, msg string) Response[T] {

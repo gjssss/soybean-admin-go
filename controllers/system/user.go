@@ -16,9 +16,9 @@ type UserController struct{}
 // @Tags 用户管理
 // @Accept json
 // @Produce json
-// @Param page query int false "页码" default(1)
-// @Param pageSize query int false "每页条数" default(10)
-// @Success 200 {object} utils.Response[utils.Pagination[[]system.User]] "成功"
+// @Param current query int false "页码" default(1)
+// @Param size query int false "每页条数" default(10)
+// @Success 200 {object} utils.Response[utils.Pagination[system.User]] "成功"
 // @Failure 400 {object} utils.Response[string] "错误"
 // @Security ApiKeyAuth
 // @Router /users [get]
