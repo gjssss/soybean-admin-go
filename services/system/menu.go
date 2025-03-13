@@ -14,7 +14,6 @@ func nestedMenu(menus *[]system.Menu) ([]*system.Menu, error) {
 	var err error
 	var cache = make(map[uint]*system.Menu)
 	for _, menu := range *menus {
-		println(menu.ID, menu.MenuName)
 		menu.Children = make([]system.Menu, 0)
 		cache[menu.ID] = &menu
 	}

@@ -42,7 +42,6 @@ func (r *UserRepository) UpdatePassword(user system.User) error {
 }
 
 func (r *UserRepository) Delete(user system.User) error {
-	println("delete", user.ID)
 	if err := global.DB.Delete(&user).Error; err != nil {
 		return err
 	}
