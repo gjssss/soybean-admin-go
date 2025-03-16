@@ -4,10 +4,14 @@ definitions:
     properties:
       code:
         type: string
+      createTime:
+        type: string
       desc:
         type: string
       id:
         type: integer
+      updateTime:
+        type: string
     type: object
   system.Menu:
     properties:
@@ -72,15 +76,10 @@ definitions:
       updateTime:
         type: string
     required:
-    - constant
-    - hideInMenu
     - i18nKey
     - iconType
-    - keepAlive
     - menuName
     - menuType
-    - multiTab
-    - order
     - routeName
     - routePath
     type: object

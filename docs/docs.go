@@ -1529,26 +1529,27 @@ const docTemplate = `{
                 "code": {
                     "type": "string"
                 },
+                "createTime": {
+                    "type": "string"
+                },
                 "desc": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
+                },
+                "updateTime": {
+                    "type": "string"
                 }
             }
         },
         "system.Menu": {
             "type": "object",
             "required": [
-                "constant",
-                "hideInMenu",
                 "i18nKey",
                 "iconType",
-                "keepAlive",
                 "menuName",
                 "menuType",
-                "multiTab",
-                "order",
                 "routeName",
                 "routePath"
             ],
