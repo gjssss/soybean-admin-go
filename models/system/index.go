@@ -43,6 +43,7 @@ func InitDatabase(db *gorm.DB) {
 			I18nKey:   "route.home",
 			Icon:      "mdi:monitor-dashboard",
 			IconType:  "1",
+			Constant:  true,
 		},
 		// 系统管理及其子菜单
 		{
@@ -95,6 +96,19 @@ func InitDatabase(db *gorm.DB) {
 			Order:     3,
 			I18nKey:   "route.manage_menu",
 			Icon:      "material-symbols:route",
+			IconType:  "1",
+		},
+		{
+			Status:    "1",
+			ParentID:  2,
+			MenuType:  "2",
+			MenuName:  "按钮管理",
+			RouteName: "manage_button",
+			RoutePath: "/manage/button",
+			Component: "view.manage_button",
+			Order:     5,
+			I18nKey:   "route.manage_button",
+			Icon:      "carbon:button-centered",
 			IconType:  "1",
 		},
 		{
