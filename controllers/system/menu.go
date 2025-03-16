@@ -36,7 +36,6 @@ func (c *MenuController) GetMenus(ctx *gin.Context) {
 // @Produce json
 // @Success 200 {object} utils.Response[[]system.Menu] "成功"
 // @Failure 400 {object} utils.Response[string] "错误"
-// @Security ApiKeyAuth
 // @Router /menus/constant [get]
 func (c *MenuController) GetConstantMenus(ctx *gin.Context) {
 	menus, err := SystemService.Menu.GetConstantMenu()

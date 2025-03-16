@@ -16,7 +16,12 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		token := strings.Split(tokenString, " ")[1]
+		splitToken := strings.Split(tokenString, " ")
+		if len(splitToken) != 2 {
+			c.AbortWithStatusJSON(http.StatusOK, utils.NewLogoutModelResponse("7777", "请先登录"))
+			return
+		}
+		token := splitToken[1]
 		c.Set("accessToken", token)
 
 		if utils.CheckBlacklist(token) {
