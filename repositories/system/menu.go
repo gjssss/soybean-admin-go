@@ -13,13 +13,19 @@ func (c *MenuRepository) GetMenus() ([]system.Menu, error) {
 	return menus, err
 }
 
+func (c *MenuRepository) GetConstantMenu() ([]system.Menu, error) {
+	var menus []system.Menu
+	err := global.DB.Where("constant = ?", true).Find(&menus).Error
+	return menus, err
+}
+
 func (c *MenuRepository) GetMenusByUserId(userId uint) ([]system.Menu, error) {
 	var menus []system.Menu
 	err := global.DB.Raw(`
         SELECT m.* FROM menus m
         JOIN role_menus rm ON m.id = rm.menu_id
         JOIN user_roles ur ON rm.role_id = ur.role_id
-        WHERE ur.user_id = ?
+        WHERE ur.user_id = ? and m.constant = FALSE
     `, userId).Scan(&menus).Error
 	return menus, err
 }

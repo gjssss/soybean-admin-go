@@ -40,6 +40,15 @@ func (s *MenuService) GetMenusByUserId(userId uint) ([]*system.Menu, error) {
 	return menus, err
 }
 
+func (s *MenuService) GetConstantMenu() ([]*system.Menu, error) {
+	dbMenu, err := SystemRepositories.Menu.GetConstantMenu()
+	if err != nil {
+		return make([]*system.Menu, 0), err
+	}
+	menus, err := nestedMenu(&dbMenu)
+	return menus, err
+}
+
 func (s *MenuService) GetMenus() ([]*system.Menu, error) {
 	dbMenu, err := SystemRepositories.Menu.GetMenus()
 	if err != nil {

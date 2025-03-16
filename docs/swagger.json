@@ -577,6 +577,40 @@
                 }
             }
         },
+        "/menus/constant": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取系统常量菜单列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "获取常量菜单",
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-array_system_Menu"
+                        }
+                    },
+                    "400": {
+                        "description": "错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    }
+                }
+            }
+        },
         "/menus/delete": {
             "post": {
                 "security": [

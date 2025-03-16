@@ -29,6 +29,24 @@ func (c *MenuController) GetMenus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(menus))
 }
 
+// @Summary 获取常量菜单
+// @Description 获取系统常量菜单列表
+// @Tags 菜单管理
+// @Accept json
+// @Produce json
+// @Success 200 {object} utils.Response[[]system.Menu] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /menus/constant [get]
+func (c *MenuController) GetConstantMenus(ctx *gin.Context) {
+	menus, err := SystemService.Menu.GetConstantMenu()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("获取常量菜单失败: "+err.Error()))
+		return
+	}
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(menus))
+}
+
 // @Summary 获取用户菜单
 // @Description 获取当前用户的菜单列表
 // @Tags 菜单管理
