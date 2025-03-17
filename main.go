@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/gjssss/soybean-admin-go/config"
 	"github.com/gjssss/soybean-admin-go/database"
 	"github.com/gjssss/soybean-admin-go/global"
 	"github.com/gjssss/soybean-admin-go/routes"
+	"github.com/gjssss/soybean-admin-go/utils/config"
 
 	"github.com/gin-gonic/gin"
 
@@ -32,13 +32,17 @@ import (
 // @description 请在此处输入Bearer Token，格式为: Bearer {token}
 func main() {
 	// 加载配置
-	config := &config.Config{}
-	config.Init()
-	global.Config = config
+	conf, err := config.InitConfig()
+	if err != nil {
+		panic(err)
+	}
+	global.Config = &conf
 
 	// 初始化数据库
-	db := database.InitDB(config.DB)
+	db := database.InitDB(&conf.Db)
 	global.DB = db
+	rdb := database.InitRedis()
+	global.Redis = rdb
 
 	// 创建Gin实例
 	router := gin.Default()

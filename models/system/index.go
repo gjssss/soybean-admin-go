@@ -15,6 +15,8 @@ func AutoMigrate(db *gorm.DB) {
 		MenuQuery{},
 
 		Role{},
+
+		Api{},
 	)
 }
 
