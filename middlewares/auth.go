@@ -13,27 +13,27 @@ func AuthMiddleware() gin.HandlerFunc {
 		tokenString := c.GetHeader("Authorization")
 		if tokenString == "" {
 			c.AbortWithStatusJSON(http.StatusOK, utils.NewLogoutModelResponse("7777", "请先登录"))
-			return
+			c.Abort()
 		}
 
 		splitToken := strings.Split(tokenString, " ")
 		if len(splitToken) != 2 {
 			c.AbortWithStatusJSON(http.StatusOK, utils.NewLogoutModelResponse("7777", "请先登录"))
-			return
+			c.Abort()
 		}
 		token := splitToken[1]
 		c.Set("accessToken", token)
 
 		if utils.CheckBlacklist(token) {
 			c.AbortWithStatusJSON(http.StatusOK, utils.NewLogoutModelResponse("8888", "登录已过期"))
-			return
+			c.Abort()
 		}
 
 		claims, err := utils.ParseToken(token)
 
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusOK, utils.NewLogoutModelResponse("8888", "登录已过期"))
-			return
+			c.Abort()
 		}
 
 		// 将用户信息存入上下文

@@ -130,7 +130,7 @@ func (c *ApiController) GetAllApis(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("获取所有接口失败："+err.Error()))
 		return
 	}
-
+	println(12312321)
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(apis))
 }
 

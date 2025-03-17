@@ -64,6 +64,15 @@ func (r *UserRepository) FindByUsername(username string) (system.User, error) {
 	return user, nil
 }
 
+func (r *UserRepository) GetUserRoleIds(uid uint) ([]uint, error) {
+	var roleIds []uint
+	err := global.DB.Raw(`
+		SELECT role_id FROM user_roles u
+		WHERE u.user_id = ?
+	`, uid).Scan(&roleIds).Error
+	return roleIds, err
+}
+
 func (r *UserRepository) UpdateUserRoles(userID uint, roleIDs []uint) error {
 	// 先清除用户现有的角色关联
 	if err := global.DB.Model(&system.User{ID: userID}).Association("Roles").Clear(); err != nil {

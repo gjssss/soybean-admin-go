@@ -8,6 +8,7 @@ import (
 func ButtonRoutes(r *gin.Engine) {
 	buttons := r.Group("/buttons")
 	buttons.Use(middlewares.AuthMiddleware())
+	buttons.Use(middlewares.ApiMiddleware())
 	{
 		buttons.GET("", SystemControllers.Button.GetButtons)
 		buttons.GET("/role", SystemControllers.Button.GetButtonsByRoleId)

@@ -8,6 +8,7 @@ import (
 func RoleRoutes(r *gin.Engine) {
 	roles := r.Group("/roles")
 	roles.Use(middlewares.AuthMiddleware())
+	roles.Use(middlewares.ApiMiddleware())
 	{
 		roles.GET("/all", SystemControllers.Role.GetAllRoles)
 		roles.GET("", SystemControllers.Role.GetRoles)

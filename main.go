@@ -4,6 +4,7 @@ import (
 	"github.com/gjssss/soybean-admin-go/database"
 	"github.com/gjssss/soybean-admin-go/global"
 	"github.com/gjssss/soybean-admin-go/routes"
+	"github.com/gjssss/soybean-admin-go/utils/cache"
 	"github.com/gjssss/soybean-admin-go/utils/config"
 
 	"github.com/gin-gonic/gin"
@@ -41,6 +42,11 @@ func main() {
 	// 初始化数据库
 	db := database.InitDB(&conf.Db)
 	global.DB = db
+	rds := database.InitRedis()
+	global.Redis = rds
+
+	// 加载API缓存
+	cache.ApiCache.Refresh()
 
 	// 创建Gin实例
 	router := gin.Default()

@@ -8,6 +8,7 @@ import (
 func UserRoutes(r *gin.Engine) {
 	users := r.Group("/users")
 	users.Use(middlewares.AuthMiddleware())
+	users.Use(middlewares.ApiMiddleware())
 	{
 		users.GET("", SystemControllers.User.GetAllUsers)
 		users.POST("", SystemControllers.User.CreateUser)

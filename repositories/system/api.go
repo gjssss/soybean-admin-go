@@ -36,6 +36,12 @@ func (r *ApiRepository) GetAllApis() ([]system.Api, error) {
 	return apis, err
 }
 
+func (r *ApiRepository) GetAllApisRoles() ([]system.Api, error) {
+	var apis []system.Api
+	err := global.DB.Preload("Roles").Find(&apis).Error
+	return apis, err
+}
+
 func (r *ApiRepository) GetRoleApis() ([]map[string]interface{}, error) {
 	var results []map[string]interface{}
 	err := global.DB.Table("role_api").Find(&results).Error

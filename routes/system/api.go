@@ -8,6 +8,7 @@ import (
 func ApiRoutes(r *gin.Engine) {
 	apis := r.Group("/apis")
 	apis.Use(middlewares.AuthMiddleware())
+	apis.Use(middlewares.ApiMiddleware())
 	{
 		apis.GET("", SystemControllers.Api.GetAllApis)
 		apis.GET("/role", SystemControllers.Api.GetApisByRoleID)
