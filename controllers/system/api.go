@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gjssss/soybean-admin-go/models/system"
 	"github.com/gjssss/soybean-admin-go/utils"
+	"github.com/gjssss/soybean-admin-go/utils/cache"
 )
 
 type ApiController struct{}
@@ -32,6 +33,7 @@ func (c *ApiController) CreateApi(ctx *gin.Context) {
 		return
 	}
 
+	cache.ApiCache.Refresh()
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(api))
 }
 
@@ -57,6 +59,7 @@ func (c *ApiController) UpdateApi(ctx *gin.Context) {
 		return
 	}
 
+	cache.ApiCache.Refresh()
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(api))
 }
 
@@ -84,6 +87,7 @@ func (c *ApiController) DeleteApi(ctx *gin.Context) {
 		return
 	}
 
+	cache.ApiCache.Refresh()
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("删除成功"))
 }
 
@@ -130,7 +134,6 @@ func (c *ApiController) GetAllApis(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("获取所有接口失败："+err.Error()))
 		return
 	}
-	println(12312321)
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse(apis))
 }
 
@@ -158,6 +161,6 @@ func (c *ApiController) UpdateRoleApi(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("更新角色接口关联失败："+err.Error()))
 		return
 	}
-
+	cache.ApiCache.Refresh()
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("更新成功"))
 }
