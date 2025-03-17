@@ -6,24 +6,39 @@ import (
 )
 
 type Config struct {
-	CacheEngine CacheEngine  `json:"cache_engine"`
+	IsInit      bool         `json:"isInit"`
+	CacheEngine CacheEngine  `json:"cacheEngine"`
 	Redis       RedisConfig  `json:"redis"`
 	Db          DbConfig     `json:"db"`
 	Secret      SecretConfig `json:"secret"`
 }
 
-func InitConfig() (Config, error) {
+func (c *Config) InitConfig() error {
 	file, err := os.Open("./config.json")
 	if err != nil {
 		println("err", err)
-		return Config{}, err
+		return err
 	}
 	defer file.Close()
 
-	var config Config
-	err = json.NewDecoder(file).Decode(&config)
+	err = json.NewDecoder(file).Decode(&c)
 	if err != nil {
-		return Config{}, err
+		return err
 	}
-	return config, nil
+	return nil
+}
+
+func (c *Config) SaveConfig() error {
+	file, err := os.Create("./config.json")
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	err = encoder.Encode(c)
+	if err != nil {
+		return err
+	}
+	return nil
 }

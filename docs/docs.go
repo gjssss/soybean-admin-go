@@ -1842,6 +1842,12 @@ const docTemplate = `{
                 "path": {
                     "type": "string"
                 },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/system.Role"
+                    }
+                },
                 "updateTime": {
                     "type": "string"
                 }

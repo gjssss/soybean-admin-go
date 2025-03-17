@@ -33,14 +33,15 @@ import (
 // @description 请在此处输入Bearer Token，格式为: Bearer {token}
 func main() {
 	// 加载配置
-	conf, err := config.InitConfig()
+	conf := config.Config{}
+	err := conf.InitConfig()
 	if err != nil {
 		panic(err)
 	}
 	global.Config = &conf
 
 	// 初始化数据库
-	db := database.InitDB(&conf.Db)
+	db := database.InitDB()
 	global.DB = db
 	rds := database.InitRedis()
 	global.Redis = rds

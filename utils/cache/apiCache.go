@@ -42,6 +42,9 @@ func (a *apiCache) Refresh() {
 
 func (a *apiCache) Has(path string, method string, role_id uint) bool {
 	key := makeApiKey(path, method)
-	role_ids, _ := global.Redis.LRange(ctx, key, 0, -1).Result()
+	role_ids, err := global.Redis.LRange(ctx, key, 0, -1).Result()
+	if err != nil {
+		return false
+	}
 	return slices.Contains(role_ids, fmt.Sprintf("%d", role_id))
 }

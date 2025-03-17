@@ -1,4 +1,5 @@
 {
+    "isInit": false,
     "cacheEngine": "redis",
     "redis": {
         "host": "localhost:6379",
