@@ -193,15 +193,65 @@ func InitDatabase(db *gorm.DB) {
 		},
 	}
 
+	// API
+	apis := []Api{
+		{Path: "/auth/login", Method: "POST", Group: "权限接口"},
+		{Path: "/auth/getUserInfo", Method: "GET", Group: "权限接口"},
+		{Path: "/auth/refreshToken", Method: "POST", Group: "权限接口"},
+
+		{Path: "/users", Method: "GET", Group: "用户管理"},
+		{Path: "/users", Method: "POST", Group: "用户管理"},
+		{Path: "/users/password", Method: "POST", Group: "用户管理"},
+		{Path: "/users/delete", Method: "POST", Group: "用户管理"},
+		{Path: "/users/batchDelete", Method: "POST", Group: "用户管理"},
+		{Path: "/users/roles", Method: "POST", Group: "用户管理"},
+		{Path: "/users/checkUsername", Method: "GET", Group: "用户管理"},
+		{Path: "/users/roles", Method: "GET", Group: "用户管理"},
+
+		{Path: "/roles/all", Method: "GET", Group: "角色管理"},
+		{Path: "/roles", Method: "GET", Group: "角色管理"},
+		{Path: "/roles", Method: "POST", Group: "角色管理"},
+		{Path: "/roles/update", Method: "POST", Group: "角色管理"},
+		{Path: "/roles/delete", Method: "POST", Group: "角色管理"},
+		{Path: "/roles/batchDelete", Method: "POST", Group: "角色管理"},
+		{Path: "/roles/menus", Method: "POST", Group: "角色管理"},
+		{Path: "/roles/buttons", Method: "POST", Group: "角色管理"},
+
+		{Path: "/menus", Method: "GET", Group: "菜单管理"},
+		{Path: "/menus/user", Method: "GET", Group: "菜单管理"},
+		{Path: "/menus/role", Method: "GET", Group: "菜单管理"},
+		{Path: "/menus", Method: "POST", Group: "菜单管理"},
+		{Path: "/menus/update", Method: "POST", Group: "菜单管理"},
+		{Path: "/menus/delete", Method: "POST", Group: "菜单管理"},
+		{Path: "/menus/batchDelete", Method: "POST", Group: "菜单管理"},
+		{Path: "/menus/constant", Method: "GET", Group: "菜单管理"},
+
+		{Path: "/buttons", Method: "GET", Group: "按钮管理"},
+		{Path: "/buttons/role", Method: "GET", Group: "按钮管理"},
+		{Path: "/buttons/user", Method: "GET", Group: "按钮管理"},
+		{Path: "/buttons", Method: "POST", Group: "按钮管理"},
+		{Path: "/buttons/update", Method: "POST", Group: "按钮管理"},
+		{Path: "/buttons/delete", Method: "POST", Group: "按钮管理"},
+		{Path: "/buttons/batchDelete", Method: "POST", Group: "按钮管理"},
+
+		{Path: "/apis", Method: "GET", Group: "接口管理"},
+		{Path: "/apis/role", Method: "GET", Group: "接口管理"},
+		{Path: "/apis", Method: "POST", Group: "接口管理"},
+		{Path: "/apis/update", Method: "POST", Group: "接口管理"},
+		{Path: "/apis/delete", Method: "POST", Group: "接口管理"},
+		{Path: "/apis/role", Method: "POST", Group: "接口管理"},
+	}
+
 	// Role
 	roles := []Role{
-		{RoleName: "R_SUPER", RoleDesc: "超级管理员", Menus: menus, Buttons: buttons},
+		{RoleName: "R_SUPER", RoleDesc: "超级管理员", Menus: menus, Buttons: buttons, Apis: apis},
 	}
 
 	// User
 	users := []*User{
 		{UserName: "admin", Password: encodePassword("123123123"), Roles: roles},
 	}
+
 	db.Create(users)
 }
 

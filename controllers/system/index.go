@@ -13,4 +13,5 @@ type Group struct {
 	Menu   MenuController
 	Role   RoleController
 	Button ButtonController
+	Api    ApiController
 }

@@ -11,4 +11,5 @@ type Group struct {
 	Menu   MenuService
 	Role   RoleService
 	Button ButtonService
+	Api    ApiService
 }

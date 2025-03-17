@@ -7,5 +7,4 @@ type Api struct {
 	Path   string `json:"path"`
 	Method string `json:"method"`
 	Group  string `json:"group"`
-	Role   []Role `gorm:"many2many:api_role" json:"role"`
 }

@@ -15,4 +15,5 @@ type Role struct {
 	RoleDesc  string         `gorm:"size:255" json:"roleDesc"`
 	Menus     []Menu         `gorm:"many2many:role_menus" json:"menu,omitempty"`
 	Buttons   []Button       `gorm:"many2many:role_buttons" json:"buttons,omitempty"`
+	Apis      []Api          `gorm:"many2many:role_api" json:"Apis,omitempty"`
 }

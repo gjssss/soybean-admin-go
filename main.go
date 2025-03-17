@@ -41,8 +41,6 @@ func main() {
 	// 初始化数据库
 	db := database.InitDB(&conf.Db)
 	global.DB = db
-	rdb := database.InitRedis()
-	global.Redis = rdb
 
 	// 创建Gin实例
 	router := gin.Default()

@@ -5,4 +5,5 @@ type Group struct {
 	Menu   MenuRepository
 	Role   RoleRepository
 	Button ButtonRepository
+	Api    ApiRepository
 }

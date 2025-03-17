@@ -15,4 +15,5 @@ func Init(r *gin.Engine) {
 	RoleRoutes(r)
 	MenuRoutes(r)
 	ButtonRoutes(r)
+	ApiRoutes(r)
 }

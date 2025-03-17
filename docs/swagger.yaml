@@ -1,5 +1,22 @@
 basePath: /
 definitions:
+  system.Api:
+    properties:
+      createTime:
+        type: string
+      group:
+        type: string
+      id:
+        type: integer
+      method:
+        type: string
+      name:
+        type: string
+      path:
+        type: string
+      updateTime:
+        type: string
+    type: object
   system.Button:
     properties:
       code:
@@ -96,6 +113,10 @@ definitions:
     type: object
   system.Role:
     properties:
+      Apis:
+        items:
+          $ref: '#/definitions/system.Api'
+        type: array
       buttons:
         items:
           $ref: '#/definitions/system.Button'
@@ -202,6 +223,21 @@ definitions:
     - size
     - total
     type: object
+  utils.Response-array_system_Api:
+    properties:
+      code:
+        type: string
+      data:
+        items:
+          $ref: '#/definitions/system.Api'
+        type: array
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
   utils.Response-array_system_Button:
     properties:
       code:
@@ -253,6 +289,19 @@ definitions:
         type: string
       data:
         type: string
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  utils.Response-system_Api:
+    properties:
+      code:
+        type: string
+      data:
+        $ref: '#/definitions/system.Api'
       msg:
         type: string
     required:
@@ -374,6 +423,174 @@ info:
   title: Soybean Admin Go API
   version: "1.0"
 paths:
+  /apis:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有API接口列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.Response-array_system_Api'
+        "400":
+          description: 错误
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取所有API接口
+      tags:
+      - API管理
+    post:
+      consumes:
+      - application/json
+      description: 创建新的API接口
+      parameters:
+      - description: API信息
+        in: body
+        name: api
+        required: true
+        schema:
+          $ref: '#/definitions/system.Api'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.Response-system_Api'
+        "400":
+          description: 错误
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建API接口
+      tags:
+      - API管理
+  /apis/delete:
+    post:
+      consumes:
+      - application/json
+      description: 删除指定API接口
+      parameters:
+      - description: API ID
+        in: body
+        name: id
+        required: true
+        schema:
+          properties:
+            id:
+              type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+        "400":
+          description: 错误
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除API接口
+      tags:
+      - API管理
+  /apis/role:
+    get:
+      consumes:
+      - application/json
+      description: 根据角色ID获取API接口列表
+      parameters:
+      - description: 角色ID
+        in: query
+        name: roleId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.Response-array_system_Api'
+        "400":
+          description: 错误
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取角色API接口
+      tags:
+      - API管理
+    post:
+      consumes:
+      - application/json
+      description: 更新角色与API的关联关系
+      parameters:
+      - description: 角色API关联信息
+        in: body
+        name: apiInfo
+        required: true
+        schema:
+          properties:
+            ids:
+              items:
+                type: integer
+              type: array
+            roleId:
+              type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+        "400":
+          description: 错误
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+      security:
+      - ApiKeyAuth: []
+      summary: 更新角色API关联
+      tags:
+      - API管理
+  /apis/update:
+    post:
+      consumes:
+      - application/json
+      description: 更新API接口信息
+      parameters:
+      - description: API信息
+        in: body
+        name: api
+        required: true
+        schema:
+          $ref: '#/definitions/system.Api'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.Response-system_Api'
+        "400":
+          description: 错误
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+      security:
+      - ApiKeyAuth: []
+      summary: 更新API接口
+      tags:
+      - API管理
   /auth/getUserInfo:
     get:
       consumes:
@@ -742,8 +959,6 @@ paths:
           description: 错误
           schema:
             $ref: '#/definitions/utils.Response-string'
-      security:
-      - ApiKeyAuth: []
       summary: 获取常量菜单
       tags:
       - 菜单管理

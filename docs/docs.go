@@ -19,6 +19,275 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/apis": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取所有API接口列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API管理"
+                ],
+                "summary": "获取所有API接口",
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-array_system_Api"
+                        }
+                    },
+                    "400": {
+                        "description": "错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "创建新的API接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API管理"
+                ],
+                "summary": "创建API接口",
+                "parameters": [
+                    {
+                        "description": "API信息",
+                        "name": "api",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/system.Api"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-system_Api"
+                        }
+                    },
+                    "400": {
+                        "description": "错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    }
+                }
+            }
+        },
+        "/apis/delete": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "删除指定API接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API管理"
+                ],
+                "summary": "删除API接口",
+                "parameters": [
+                    {
+                        "description": "API ID",
+                        "name": "id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    },
+                    "400": {
+                        "description": "错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    }
+                }
+            }
+        },
+        "/apis/role": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "根据角色ID获取API接口列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API管理"
+                ],
+                "summary": "获取角色API接口",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色ID",
+                        "name": "roleId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-array_system_Api"
+                        }
+                    },
+                    "400": {
+                        "description": "错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "更新角色与API的关联关系",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API管理"
+                ],
+                "summary": "更新角色API关联",
+                "parameters": [
+                    {
+                        "description": "角色API关联信息",
+                        "name": "apiInfo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ids": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "roleId": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    },
+                    "400": {
+                        "description": "错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    }
+                }
+            }
+        },
+        "/apis/update": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "更新API接口信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API管理"
+                ],
+                "summary": "更新API接口",
+                "parameters": [
+                    {
+                        "description": "API信息",
+                        "name": "api",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/system.Api"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-system_Api"
+                        }
+                    },
+                    "400": {
+                        "description": "错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/getUserInfo": {
             "get": {
                 "security": [
@@ -585,11 +854,6 @@ const docTemplate = `{
         },
         "/menus/constant": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "获取系统常量菜单列表",
                 "consumes": [
                     "application/json"
@@ -1557,6 +1821,32 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "system.Api": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "type": "string"
+                },
+                "group": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "updateTime": {
+                    "type": "string"
+                }
+            }
+        },
         "system.Button": {
             "type": "object",
             "properties": {
@@ -1698,6 +1988,12 @@ const docTemplate = `{
         "system.Role": {
             "type": "object",
             "properties": {
+                "Apis": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/system.Api"
+                    }
+                },
                 "buttons": {
                     "type": "array",
                     "items": {
@@ -1857,6 +2153,28 @@ const docTemplate = `{
                 }
             }
         },
+        "utils.Response-array_system_Api": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/system.Api"
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
         "utils.Response-array_system_Button": {
             "type": "object",
             "required": [
@@ -1936,6 +2254,25 @@ const docTemplate = `{
                 },
                 "data": {
                     "type": "string"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.Response-system_Api": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/system.Api"
                 },
                 "msg": {
                     "type": "string"
