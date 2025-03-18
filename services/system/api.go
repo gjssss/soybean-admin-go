@@ -18,6 +18,10 @@ func (s *ApiService) DeleteApi(id uint) error {
 	return SystemRepositories.Api.DeleteApi(id)
 }
 
+func (s *ApiService) DeleteApiBatch(ids []uint) error {
+	return SystemRepositories.Api.DeleteApiBatch(ids)
+}
+
 func (s *ApiService) GetApisByRoleID(roleID uint) ([]system.Api, error) {
 	return SystemRepositories.Api.GetApisByRoleID(roleID)
 }

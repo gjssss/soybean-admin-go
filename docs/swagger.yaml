@@ -10,8 +10,6 @@ definitions:
         type: integer
       method:
         type: string
-      name:
-        type: string
       path:
         type: string
       roles:
@@ -504,6 +502,39 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 删除API接口
+      tags:
+      - API管理
+  /apis/delete/batch:
+    post:
+      consumes:
+      - application/json
+      description: 批量删除指定API接口
+      parameters:
+      - description: API ID列表
+        in: body
+        name: ids
+        required: true
+        schema:
+          properties:
+            ids:
+              items:
+                type: integer
+              type: array
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+        "400":
+          description: 错误
+          schema:
+            $ref: '#/definitions/utils.Response-string'
+      security:
+      - ApiKeyAuth: []
+      summary: 批量删除API接口
       tags:
       - API管理
   /apis/role:

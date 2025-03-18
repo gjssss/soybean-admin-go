@@ -28,7 +28,6 @@ func ApiMiddleware() gin.HandlerFunc {
 		for _, roleId := range roleIds {
 			if cache.ApiCache.Has(path, method, roleId) {
 				flag = true
-				c.Abort()
 			}
 		}
 		if !flag {

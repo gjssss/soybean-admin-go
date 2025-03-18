@@ -15,6 +15,7 @@ func ApiRoutes(r *gin.Engine) {
 		apis.POST("", SystemControllers.Api.CreateApi)
 		apis.POST("/update", SystemControllers.Api.UpdateApi)
 		apis.POST("/delete", SystemControllers.Api.DeleteApi)
+		apis.POST("/delete/batch", SystemControllers.Api.BatchDeleteApi)
 		apis.POST("/role", SystemControllers.Api.UpdateRoleApi)
 	}
 }

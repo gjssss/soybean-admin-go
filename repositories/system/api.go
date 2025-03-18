@@ -1,6 +1,9 @@
 package system
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/gjssss/soybean-admin-go/global"
 	"github.com/gjssss/soybean-admin-go/models/system"
 )
@@ -17,6 +20,10 @@ func (r *ApiRepository) UpdateApi(api *system.Api) error {
 
 func (r *ApiRepository) DeleteApi(id uint) error {
 	return global.DB.Delete(&system.Api{}, id).Error
+}
+
+func (r *ApiRepository) DeleteApiBatch(ids []uint) error {
+	return global.DB.Delete(&system.Api{}, ids).Error
 }
 
 func (r *ApiRepository) GetApisByRoleID(roleID uint) ([]system.Api, error) {
@@ -62,6 +69,8 @@ func (r *ApiRepository) UpdateRoleApi(roleID uint, apiIDs []uint) error {
 
 	// 添加新API权限
 	var apis []system.Api
+	data, _ := json.MarshalIndent(apiIDs, "", "  ")
+	fmt.Println(string(data))
 	if err := global.DB.Find(&apis, apiIDs).Error; err != nil {
 		return err
 	}

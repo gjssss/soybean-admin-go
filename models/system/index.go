@@ -114,16 +114,17 @@ func InitDatabase(db *gorm.DB) {
 			IconType:  "1",
 		},
 		{
-			Status:     "1",
-			ParentID:   2,
-			MenuType:   "2",
-			MenuName:   "用户详情",
-			RouteName:  "manage_user-detail",
-			RoutePath:  "/manage/user-detail/:id",
-			Component:  "view.manage_user-detail",
-			Order:      4,
-			I18nKey:    "route.manage_user-detail",
-			HideInMenu: true,
+			Status:    "1",
+			ParentID:  2,
+			MenuType:  "2",
+			MenuName:  "接口管理",
+			RouteName: "api",
+			RoutePath: "/manage/api",
+			Component: "view.manage_api",
+			Order:     6,
+			I18nKey:   "route.manage_api",
+			Icon:      "carbon:api-1",
+			IconType:  "1",
 		},
 		{
 			Status:     "1",
@@ -240,6 +241,7 @@ func InitDatabase(db *gorm.DB) {
 		{Path: "/apis/update", Method: "POST", Group: "接口管理"},
 		{Path: "/apis/delete", Method: "POST", Group: "接口管理"},
 		{Path: "/apis/role", Method: "POST", Group: "接口管理"},
+		{Path: "/apis/delete/batch", Method: "POST", Group: "接口管理"},
 	}
 
 	// Role

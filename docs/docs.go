@@ -146,6 +146,59 @@ const docTemplate = `{
                 }
             }
         },
+        "/apis/delete/batch": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "批量删除指定API接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API管理"
+                ],
+                "summary": "批量删除API接口",
+                "parameters": [
+                    {
+                        "description": "API ID列表",
+                        "name": "ids",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ids": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    },
+                    "400": {
+                        "description": "错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-string"
+                        }
+                    }
+                }
+            }
+        },
         "/apis/role": {
             "get": {
                 "security": [
@@ -1834,9 +1887,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "method": {
-                    "type": "string"
-                },
-                "name": {
                     "type": "string"
                 },
                 "path": {

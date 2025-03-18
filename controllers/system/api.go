@@ -91,6 +91,34 @@ func (c *ApiController) DeleteApi(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("删除成功"))
 }
 
+// @Summary 批量删除API接口
+// @Description 批量删除指定API接口
+// @Tags API管理
+// @Accept json
+// @Produce json
+// @Param ids body object{ids=[]uint} true "API ID列表"
+// @Success 200 {object} utils.Response[string] "成功"
+// @Failure 400 {object} utils.Response[string] "错误"
+// @Security ApiKeyAuth
+// @Router /apis/delete/batch [post]
+func (c *ApiController) BatchDeleteApi(ctx *gin.Context) {
+	var req struct {
+		IDs []uint `json:"ids"`
+	}
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("参数错误："+err.Error()))
+		return
+	}
+
+	if err := SystemService.Api.DeleteApiBatch(req.IDs); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewErrorResponse("批量删除接口失败："+err.Error()))
+		return
+	}
+
+	cache.ApiCache.Refresh()
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("批量删除成功"))
+}
+
 // @Summary 获取角色API接口
 // @Description 根据角色ID获取API接口列表
 // @Tags API管理
