@@ -37,11 +37,75 @@ func (c *RoleRepository) UpdateRole(role *system.Role) error {
 }
 
 func (c *RoleRepository) DeleteRole(id uint) error {
-	return global.DB.Delete(&system.Role{}, id).Error
+	tx := global.DB.Begin()
+
+	// Delete associations in user_roles table first
+	if err := tx.Exec("DELETE FROM user_roles WHERE role_id = ?", id).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Delete associations in role_menus table
+	if err := tx.Exec("DELETE FROM role_menus WHERE role_id = ?", id).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Delete associations in role_buttons table
+	if err := tx.Exec("DELETE FROM role_buttons WHERE role_id = ?", id).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Delete associations in role_api table (if it exists)
+	if err := tx.Exec("DELETE FROM role_api WHERE role_id = ?", id).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Then delete the role itself
+	if err := tx.Delete(&system.Role{}, id).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func (c *RoleRepository) BatchDeleteRole(ids []uint) error {
-	return global.DB.Delete(&system.Role{}, ids).Error
+	tx := global.DB.Begin()
+
+	// Delete associations in user_roles table first
+	if err := tx.Exec("DELETE FROM user_roles WHERE role_id IN ?", ids).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Delete associations in role_menus table
+	if err := tx.Exec("DELETE FROM role_menus WHERE role_id IN ?", ids).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Delete associations in role_buttons table
+	if err := tx.Exec("DELETE FROM role_buttons WHERE role_id IN ?", ids).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Delete associations in role_api table (if it exists)
+	if err := tx.Exec("DELETE FROM role_api WHERE role_id IN ?", ids).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Then delete the roles themselves
+	if err := tx.Delete(&system.Role{}, ids).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func (c *RoleRepository) UpdateRoleMenu(roleID uint, menuIDs []uint) error {

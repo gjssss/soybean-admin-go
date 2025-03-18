@@ -19,11 +19,39 @@ func (r *ApiRepository) UpdateApi(api *system.Api) error {
 }
 
 func (r *ApiRepository) DeleteApi(id uint) error {
-	return global.DB.Delete(&system.Api{}, id).Error
+	tx := global.DB.Begin()
+
+	// Delete associations in role_api table first
+	if err := tx.Exec("DELETE FROM role_api WHERE api_id = ?", id).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Then delete the API itself
+	if err := tx.Delete(&system.Api{}, id).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func (r *ApiRepository) DeleteApiBatch(ids []uint) error {
-	return global.DB.Delete(&system.Api{}, ids).Error
+	tx := global.DB.Begin()
+
+	// Delete associations in role_api table first
+	if err := tx.Exec("DELETE FROM role_api WHERE api_id IN ?", ids).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Then delete the APIs themselves
+	if err := tx.Delete(&system.Api{}, ids).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func (r *ApiRepository) GetApisByRoleID(roleID uint) ([]system.Api, error) {

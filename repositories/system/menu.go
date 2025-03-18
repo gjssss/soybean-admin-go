@@ -55,7 +55,21 @@ func (c *MenuRepository) UpdateMenu(menu *system.Menu) error {
 }
 
 func (c *MenuRepository) DeleteMenu(menuId uint) error {
-	return global.DB.Delete(&system.Menu{}, menuId).Error
+	tx := global.DB.Begin()
+
+	// Delete associations in role_menus table first
+	if err := tx.Exec("DELETE FROM role_menus WHERE menu_id = ?", menuId).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Then delete the menu itself
+	if err := tx.Delete(&system.Menu{}, menuId).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func (c *MenuRepository) HasChildren(menuId uint) (bool, error) {

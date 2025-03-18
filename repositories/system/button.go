@@ -43,11 +43,39 @@ func (c *ButtonRepository) UpdateButton(button *system.Button) error {
 }
 
 func (c *ButtonRepository) DeleteButton(id uint) error {
-	return global.DB.Delete(&system.Button{}, id).Error
+	tx := global.DB.Begin()
+
+	// Delete associations in role_buttons table first
+	if err := tx.Exec("DELETE FROM role_buttons WHERE button_id = ?", id).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Then delete the button itself
+	if err := tx.Delete(&system.Button{}, id).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func (c *ButtonRepository) BatchDeleteButton(ids []uint) error {
-	return global.DB.Delete(&system.Button{}, ids).Error
+	tx := global.DB.Begin()
+
+	// Delete associations in role_buttons table first
+	if err := tx.Exec("DELETE FROM role_buttons WHERE button_id IN ?", ids).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Then delete the buttons themselves
+	if err := tx.Delete(&system.Button{}, ids).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func (c *ButtonRepository) IsCodeExist(code string, excludeID ...uint) (bool, error) {
