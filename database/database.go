@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"net/url"
 	"strconv"
 	"time"
 
@@ -22,8 +23,12 @@ func InitDB() *gorm.DB {
 	switch config.Type {
 	case "mysql":
 		// MySQL连接
+		// 对连接参数进行URL编码
+		username := url.QueryEscape(config.User)
+		password := url.QueryEscape(config.Password)
+		timezone := url.QueryEscape(config.Timezone)
 		dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=%s",
-			config.User, config.Password, config.Host, config.Port, config.Name, config.Timezone)
+			username, password, config.Host, config.Port, config.Name, timezone)
 		db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 			DisableForeignKeyConstraintWhenMigrating: true,
 		})
