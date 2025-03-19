@@ -1,5 +1,7 @@
 package utils
 
+import "github.com/gin-gonic/gin"
+
 type Response[T any] struct {
 	Code string `json:"code" binding:"required"`
 	Data T      `json:"data" binding:"required"`
@@ -18,4 +20,14 @@ func NewErrorResponse(msg string) Response[string] {
 }
 func NewLogoutModelResponse(code string, msg string) Response[string] {
 	return NewResponse("8888", "", msg)
+}
+
+// Success 直接向客户端返回成功响应
+func Success[T any](c *gin.Context, data T) {
+	c.JSON(200, NewSuccessResponse(data))
+}
+
+// Fail 直接向客户端返回错误响应
+func Fail(c *gin.Context, statusCode int, message string) {
+	c.JSON(statusCode, NewErrorResponse(message))
 }

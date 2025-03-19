@@ -17,5 +17,13 @@
     },
     "secret": {
         "jwt": "jwt secret"
+    },
+    "s3": {
+        "endpoint": "https://minio.example.com",
+        "bucket": "hello",
+        "publicDomain": "https://minio.example.com",
+        "accessKey": "accessKey",
+        "secretKey": "secretKey",
+        "region": "region"
     }
 }

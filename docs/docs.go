@@ -1493,6 +1493,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/upload/token": {
+            "get": {
+                "description": "获取S3预签名URL用于直接上传文件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "上传"
+                ],
+                "summary": "获取S3上传凭证",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "对象键名",
+                        "name": "object_key",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "文件内容类型",
+                        "name": "content_type",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回预签名URL",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-system_UploadDTO"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "security": [
@@ -2094,6 +2133,25 @@ const docTemplate = `{
                 }
             }
         },
+        "system.UploadDTO": {
+            "type": "object",
+            "required": [
+                "contentType",
+                "objectKey",
+                "presignedURL"
+            ],
+            "properties": {
+                "contentType": {
+                    "type": "string"
+                },
+                "objectKey": {
+                    "type": "string"
+                },
+                "presignedURL": {
+                    "type": "string"
+                }
+            }
+        },
         "system.User": {
             "type": "object",
             "properties": {
@@ -2386,6 +2444,25 @@ const docTemplate = `{
                 },
                 "data": {
                     "$ref": "#/definitions/system.Token"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.Response-system_UploadDTO": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/system.UploadDTO"
                 },
                 "msg": {
                     "type": "string"

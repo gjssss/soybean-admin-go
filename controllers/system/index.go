@@ -14,4 +14,5 @@ type Group struct {
 	Role   RoleController
 	Button ButtonController
 	Api    ApiController
+	Upload UploadController
 }

@@ -11,6 +11,17 @@ type Config struct {
 	Redis       RedisConfig  `json:"redis"`
 	Db          DbConfig     `json:"db"`
 	Secret      SecretConfig `json:"secret"`
+	S3          S3Config     `json:"s3"`
+}
+
+// S3Config is a struct that stores the S3 configuration
+type S3Config struct {
+	Endpoint     string `json:"endpoint"`
+	Bucket       string `json:"bucket"`
+	PublicDomain string `json:"publicDomain"`
+	AccessKey    string `json:"accessKey,omitempty"`
+	SecretKey    string `json:"secretKey,omitempty"`
+	Region       string `json:"region,omitempty"`
 }
 
 func (c *Config) InitConfig() error {
