@@ -1,0 +1,33 @@
+# Git
+.git
+.gitignore
+
+# Docker
+.docker
+Dockerfile
+.dockerignore
+
+# 编译的文件
+/bin
+/dist
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# 日志文件
+*.log
+
+# 本地配置文件，这些将通过volume挂载
+config.json
+
+# IDE相关
+.idea
+.vscode
+*.swp
+*.swo
+
+# 临时文件
+/tmp
+.DS_Store 
