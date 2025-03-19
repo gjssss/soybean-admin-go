@@ -1,5 +1,5 @@
 # 第一阶段：构建应用
-FROM golang:1.21-alpine AS builder
+FROM golang:1.24.1-alpine3.21 AS builder
 
 # 设置工作目录
 WORKDIR /app
@@ -9,9 +9,6 @@ RUN apk add --no-cache git
 
 # 复制go.mod和go.sum
 COPY go.mod go.sum ./
-
-# 下载依赖
-RUN go mod download
 
 # 复制项目文件
 COPY . .

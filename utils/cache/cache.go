@@ -10,7 +10,7 @@ func InitCache() {
 	// 初始化缓存
 	if global.Config.CacheEngine == config.CacheRedis {
 		// 初始化 Redis
-		rdb := database.InitRedis()
+		rdb := database.InitRedis(global.Config.Redis)
 		global.Redis = rdb
 	}
 }

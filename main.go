@@ -43,8 +43,7 @@ func main() {
 	// 初始化数据库
 	db := database.InitDB()
 	global.DB = db
-	rds := database.InitRedis()
-	global.Redis = rds
+	cache.InitCache()
 
 	// 加载API缓存
 	cache.ApiCache.Refresh()
