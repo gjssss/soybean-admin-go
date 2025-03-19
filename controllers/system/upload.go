@@ -1,11 +1,13 @@
 package system
 
 import (
+	"fmt"
 	"net/http"
 	"path/filepath"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gjssss/soybean-admin-go/global"
 	"github.com/gjssss/soybean-admin-go/models/system"
 	"github.com/gjssss/soybean-admin-go/utils"
 	"github.com/gjssss/soybean-admin-go/utils/upload"
@@ -22,7 +24,7 @@ type UploadController struct{}
 // @Produce json
 // @Param object_key query string true "对象键名"
 // @Param content_type query string true "文件内容类型"
-// @Success 200 {object} utils.Response "返回预签名URL"
+// @Success 200 {object} utils.Response[system.UploadAWSDTO] "返回预签名URL"
 // @Router /upload/aws [get]
 func (uc *UploadController) GetUploadToken(c *gin.Context) {
 	objectKey := c.Query("object_key")
@@ -56,15 +58,47 @@ func (uc *UploadController) GetUploadToken(c *gin.Context) {
 	}
 
 	// 生成有效期为15分钟的预签名URL
-	presignedURL, err := upload.GeneratePresignedURL(objectKey, contentType, 1*time.Minute)
+	presignedURL, err := upload.GeneratePresignedURL(&global.Config.S3, objectKey, contentType, 1*time.Minute)
 	if err != nil {
 		utils.Fail(c, http.StatusInternalServerError, "生成上传凭证失败: "+err.Error())
 		return
 	}
 
-	utils.Success(c, system.UploadDTO{
+	utils.Success(c, system.UploadAWSDTO{
 		Url:         presignedURL,
 		ObjectKey:   objectKey,
 		ContentType: contentType,
+	})
+}
+
+// GetQiniuUploadToken 获取七牛云上传凭证
+// @Summary 获取七牛云上传凭证
+// @Description 获取七牛云单次使用的上传凭证
+// @Tags 上传
+// @Accept json
+// @Produce json
+// @Param content_type query string true "文件内容类型"
+// @Success 200 {object} utils.Response[system.UploadQiniuDTO] "返回七牛云上传凭证"
+// @Router /upload/qiniu [get]
+func (uc *UploadController) GetQiniuUploadToken(c *gin.Context) {
+	contentType := c.Query("content_type")
+
+	if contentType == "" {
+		utils.Fail(c, http.StatusBadRequest, "文件内容类型不能为空")
+		return
+	}
+
+	objectKey := fmt.Sprintf("%d", time.Now().UnixNano())
+	credentials, err := upload.GenerateQiniuUploadCredentials(&global.Config.Qiniu, objectKey, contentType)
+	if err != nil {
+		utils.Fail(c, http.StatusInternalServerError, "生成上传凭证失败: "+err.Error())
+		return
+	}
+
+	utils.Success(c, &system.UploadQiniuDTO{
+		Token:     credentials["token"],
+		Key:       credentials["key"],
+		UploadUrl: credentials["uploadUrl"],
+		Url:       credentials["resourceUrl"],
 	})
 }

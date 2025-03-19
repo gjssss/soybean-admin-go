@@ -12,6 +12,7 @@ type Config struct {
 	Db          DbConfig     `json:"db"`
 	Secret      SecretConfig `json:"secret"`
 	S3          S3Config     `json:"s3"`
+	Qiniu       QiniuConfig  `json:"qiniu"`
 }
 
 // S3Config is a struct that stores the S3 configuration
@@ -22,6 +23,14 @@ type S3Config struct {
 	AccessKey    string `json:"accessKey,omitempty"`
 	SecretKey    string `json:"secretKey,omitempty"`
 	Region       string `json:"region,omitempty"`
+}
+
+type QiniuConfig struct {
+	AccessKey    string `json:"accessKey"`
+	SecretKey    string `json:"secretKey"`
+	Bucket       string `json:"bucket"`
+	PublicDomain string `json:"publicDomain"`
+	Endpoint     string `json:"endpoint"`
 }
 
 func (c *Config) InitConfig() error {

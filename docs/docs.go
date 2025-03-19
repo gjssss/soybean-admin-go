@@ -1493,7 +1493,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/upload/token": {
+        "/upload/aws": {
             "get": {
                 "description": "获取S3预签名URL用于直接上传文件",
                 "consumes": [
@@ -1526,7 +1526,39 @@ const docTemplate = `{
                     "200": {
                         "description": "返回预签名URL",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response-system_UploadDTO"
+                            "$ref": "#/definitions/utils.Response-system_UploadAWSDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/upload/qiniu": {
+            "get": {
+                "description": "获取七牛云单次使用的上传凭证",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "上传"
+                ],
+                "summary": "获取七牛云上传凭证",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "文件内容类型",
+                        "name": "content_type",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回七牛云上传凭证",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response-system_UploadQiniuDTO"
                         }
                     }
                 }
@@ -2133,12 +2165,12 @@ const docTemplate = `{
                 }
             }
         },
-        "system.UploadDTO": {
+        "system.UploadAWSDTO": {
             "type": "object",
             "required": [
                 "contentType",
                 "objectKey",
-                "presignedURL"
+                "url"
             ],
             "properties": {
                 "contentType": {
@@ -2147,7 +2179,30 @@ const docTemplate = `{
                 "objectKey": {
                     "type": "string"
                 },
-                "presignedURL": {
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "system.UploadQiniuDTO": {
+            "type": "object",
+            "required": [
+                "key",
+                "token",
+                "uploadUrl",
+                "url"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "uploadUrl": {
+                    "type": "string"
+                },
+                "url": {
                     "type": "string"
                 }
             }
@@ -2450,7 +2505,7 @@ const docTemplate = `{
                 }
             }
         },
-        "utils.Response-system_UploadDTO": {
+        "utils.Response-system_UploadAWSDTO": {
             "type": "object",
             "required": [
                 "code",
@@ -2462,7 +2517,26 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/system.UploadDTO"
+                    "$ref": "#/definitions/system.UploadAWSDTO"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.Response-system_UploadQiniuDTO": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/system.UploadQiniuDTO"
                 },
                 "msg": {
                     "type": "string"

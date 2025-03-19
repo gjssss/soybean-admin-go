@@ -18,6 +18,7 @@ func UploadRoutes(r *gin.Engine) {
 		uploadGroup.Use(middlewares.AuthMiddleware())
 
 		// 获取上传凭证
-		uploadGroup.GET("/token/aws", UploadControllers.GetUploadToken)
+		uploadGroup.GET("/aws", UploadControllers.GetUploadToken)
+		uploadGroup.GET("/qiniu", UploadControllers.GetQiniuUploadToken)
 	}
 }

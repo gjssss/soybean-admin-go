@@ -25,5 +25,12 @@
         "accessKey": "accessKey",
         "secretKey": "secretKey",
         "region": "region"
+    },
+    "qiniu": {
+        "accessKey": "accessKey",
+        "secretKey": "secretKey",
+        "bucket": "bucket",
+        "publicDomain": "https://publicDomain.com",
+        "endpoint": "https://up-z1.qiniup.com"
     }
 }

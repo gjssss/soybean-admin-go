@@ -148,18 +148,34 @@ definitions:
     - refreshToken
     - token
     type: object
-  system.UploadDTO:
+  system.UploadAWSDTO:
     properties:
       contentType:
         type: string
       objectKey:
         type: string
-      presignedURL:
+      url:
         type: string
     required:
     - contentType
     - objectKey
-    - presignedURL
+    - url
+    type: object
+  system.UploadQiniuDTO:
+    properties:
+      key:
+        type: string
+      token:
+        type: string
+      uploadUrl:
+        type: string
+      url:
+        type: string
+    required:
+    - key
+    - token
+    - uploadUrl
+    - url
     type: object
   system.User:
     properties:
@@ -363,12 +379,25 @@ definitions:
     - data
     - msg
     type: object
-  utils.Response-system_UploadDTO:
+  utils.Response-system_UploadAWSDTO:
     properties:
       code:
         type: string
       data:
-        $ref: '#/definitions/system.UploadDTO'
+        $ref: '#/definitions/system.UploadAWSDTO'
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  utils.Response-system_UploadQiniuDTO:
+    properties:
+      code:
+        type: string
+      data:
+        $ref: '#/definitions/system.UploadQiniuDTO'
       msg:
         type: string
     required:
@@ -1372,7 +1401,7 @@ paths:
       summary: 更新角色
       tags:
       - 角色管理
-  /upload/token:
+  /upload/aws:
     get:
       consumes:
       - application/json
@@ -1394,8 +1423,29 @@ paths:
         "200":
           description: 返回预签名URL
           schema:
-            $ref: '#/definitions/utils.Response-system_UploadDTO'
+            $ref: '#/definitions/utils.Response-system_UploadAWSDTO'
       summary: 获取S3上传凭证
+      tags:
+      - 上传
+  /upload/qiniu:
+    get:
+      consumes:
+      - application/json
+      description: 获取七牛云单次使用的上传凭证
+      parameters:
+      - description: 文件内容类型
+        in: query
+        name: content_type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 返回七牛云上传凭证
+          schema:
+            $ref: '#/definitions/utils.Response-system_UploadQiniuDTO'
+      summary: 获取七牛云上传凭证
       tags:
       - 上传
   /users:

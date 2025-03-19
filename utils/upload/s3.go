@@ -9,11 +9,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gjssss/soybean-admin-go/global"
+	localConfig "github.com/gjssss/soybean-admin-go/utils/config"
 )
 
 // GetS3Client returns an S3 client
-func GetS3Client() (*s3.Client, error) {
-	s3Config := global.Config.S3
+func GetS3Client(s3Config *localConfig.S3Config) (*s3.Client, error) {
 
 	// 根据配置创建AWS凭证提供者
 	credProvider := credentials.NewStaticCredentialsProvider(
@@ -41,8 +41,8 @@ func GetS3Client() (*s3.Client, error) {
 }
 
 // GeneratePresignedURL 生成预签名URL用于上传文件
-func GeneratePresignedURL(objectKey string, contentType string, expires time.Duration) (string, error) {
-	client, err := GetS3Client()
+func GeneratePresignedURL(s3Config *localConfig.S3Config, objectKey string, contentType string, expires time.Duration) (string, error) {
+	client, err := GetS3Client(s3Config)
 	if err != nil {
 		return "", err
 	}
