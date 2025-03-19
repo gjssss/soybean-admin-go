@@ -18,9 +18,8 @@ func InitRedis(conf config.RedisConfig) *redis.Client {
 		})
 	} else {
 		rdb = redis.NewClient(&redis.Options{
-			Addr:     conf.Host, // Redis 服务器地址（Docker 容器）
-			DB:       conf.DB,   // 使用的数据库编号
-			Username: *conf.Username,
+			Addr: conf.Host, // Redis 服务器地址（Docker 容器）
+			DB:   conf.DB,   // 使用的数据库编号
 		})
 	}
 	rdb.FlushDB(context.Background())
