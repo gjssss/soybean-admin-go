@@ -118,7 +118,7 @@ func InitDatabase(db *gorm.DB) {
 			ParentID:  2,
 			MenuType:  "2",
 			MenuName:  "接口管理",
-			RouteName: "api",
+			RouteName: "manager_api",
 			RoutePath: "/manage/api",
 			Component: "view.manage_api",
 			Order:     6,
